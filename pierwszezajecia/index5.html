@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kompleksowy Formularz Rejestracyjny</title>
+    <style>
+        /* Podstawowe style dla czytelności (nieoceniane, ale ułatwiają odbiór) */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f4f4f4; }
+        form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        fieldset { border: 1px solid #ddd; margin-bottom: 20px; padding: 15px; border-radius: 5px; }
+        legend { font-weight: bold; color: #333; padding: 0 5px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input[type="text"], input[type="email"], input[type="password"], 
+        input[type="tel"], input[type="date"], input[type="url"], 
+        input[type="file"], select, textarea {
+            width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
+        }
+        .inline-group label { display: inline; margin-right: 15px; font-weight: normal; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; font-size: 16px; margin-right: 10px; }
+        button[type="submit"] { background-color: #28a745; color: white; }
+        button[type="reset"] { background-color: #dc3545; color: white; }
+        
+        /* Oznaczanie pól wymaganych */
+        label.required::after { content: " *"; color: red; }
+    </style>
+</head>
+<body>
+
+    <h1>Formularz Rejestracyjny</h1>
+
+    <form action="#" method="post" enctype="multipart/form-data">
+        
+        <fieldset>
+            <legend>Dane Osobowe</legend>
+
+            <div class="form-group">
+                <label for="fullname" class="required">Imię i nazwisko:</label>
+                <input type="text" id="fullname" name="fullname" required 
+                       autocomplete="name" data-validation-type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="required">Adres Email:</label>
+                <input type="email" id="email" name="email" required 
+                       autocomplete="email" 
+                       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                       title="Podaj poprawny adres email, np. jan@domena.pl"
+                       data-validation-type="email">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Telefon:</label>
+                <input type="tel" id="phone" name="phone" 
+                       placeholder="np. 123-456-789" 
+                       autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+                <label for="dob" class="required">Data urodzenia:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="website">Twoja strona WWW:</label>
+                <input type="url" id="website" name="website" placeholder="https://twojastrona.pl">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Dane Logowania</legend>
+
+            <div class="form-group">
+                <label for="password" class="required">Hasło (min. 8 znaków):</label>
+                <input type="password" id="password" name="password" 
+                       required minlength="8" 
+                       data-complexity="high">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="required">Potwierdź hasło:</label>
+                <input type="password" id="confirm_password" name="confirm_password" 
+                       required minlength="8">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Szczegóły Profilu</legend>
+
+            <div class="form-group inline-group">
+                <p style="margin-bottom: 5px; font-weight: 500;">Płeć:</p>
+                <input type="radio" id="gender_f" name="gender" value="kobieta">
+                <label for="gender_f">Kobieta</label>
+
+                <input type="radio" id="gender_m" name="gender" value="mezczyzna">
+                <label for="gender_m">Mężczyzna</label>
+
+                <input type="radio" id="gender_o" name="gender" value="inne">
+                <label for="gender_o">Inne</label>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Kraj:</label>
+                <select id="country" name="country">
+                    <option value="" disabled selected>-- Wybierz kraj --</option>
+                    <option value="pl">Polska</option>
+                    <option value="de">Niemcy</option>
+                    <option value="fr">Francja</option>
+                    <option value="es">Hiszpania</option>
+                    <option value="it">Włochy</option>
+                    <option value="uk">Wielka Brytania</option>
+                    <option value="us">Stany Zjednoczone</option>
+                    <option value="cz">Czechy</option>
+                    <option value="sk">Słowacja</option>
+                    <option value="ua">Ukraina</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="experience">Poziom doświadczenia (0-10 lat):</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span>Junior</span>
+                    <input type="range" id="experience" name="experience" 
+                           min="0" max="10" step="1" value="0" 
+                           oninput="this.nextElementSibling.value = this.value">
+                    <output>0</output> lat
+                    <span>Senior</span>
+                </div>
+            </div>
+
+            <div class="form-group inline-group">
+                <p style="margin-bottom: 5px; font-weight: 500;">Zainteresowania (zaznacz min. 5):</p>
+                <input type="checkbox" id="int_sport" name="interests[]" value="sport">
+                <label for="int_sport">Sport</label>
+
+                <input type="checkbox" id="int_music" name="interests[]" value="muzyka">
+                <label for="int_music">Muzyka</label>
+
+                <input type="checkbox" id="int_tech" name="interests[]" value="technologia">
+                <label for="int_tech">Technologia</label>
+
+                <input type="checkbox" id="int_art" name="interests[]" value="sztuka">
+                <label for="int_art">Sztuka</label>
+                
+                <br>
+
+                <input type="checkbox" id="int_travel" name="interests[]" value="podroze">
+                <label for="int_travel">Podróże</label>
+
+                <input type="checkbox" id="int_movies" name="interests[]" value="filmy">
+                <label for="int_movies">Filmy</label>
+
+                <input type="checkbox" id="int_cooking" name="interests[]" value="gotowanie">
+                <label for="int_cooking">Gotowanie</label>
+            </div>
+
+            <div class="form-group">
+                <label for="cv">Prześlij CV (PDF lub DOC):</label>
+                <input type="file" id="cv" name="cv" accept=".pdf, .doc, .docx" data-max-size="5MB">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Kontakt i Zgody</legend>
+
+            <div class="form-group">
+                <label for="message">Wiadomość:</label>
+                <textarea id="message" name="message" rows="5" maxlength="500" 
+                          placeholder="Wpisz swoją wiadomość (max 500 znaków)..."></textarea>
+            </div>
+
+            <div class="form-group inline-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms" class="required">Akceptuję regulamin serwisu</label>
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <button type="submit">Zarejestruj się</button>
+            <button type="reset">Wyczyść formularz</button>
+        </div>
+
+    </form>
+
+</body>
+</html>

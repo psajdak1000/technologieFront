@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Artykuły o technologii HTML5 i multimedia.">
+    <meta name="author" content="Jan Kowalski">
+    <title>Blog | Moja Strona</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Blog Technologiczny</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Strona Główna</a></li>
+                <li><a href="blog.html" aria-current="page">Blog i Multimedia</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container-flex">
+        
+        <div class="content-wrapper">
+            <nav aria-label="Breadcrumb" class="breadcrumbs">
+                <ol>
+                    <li><a href="index.html">Home</a></li>
+                    <li><span aria-current="page">Blog</span></li>
+                </ol>
+            </nav>
+
+            <article>
+                <header>
+                    <h2>Przyszłość HTML5 i Semantyki</h2>
+                    <p class="meta">Opublikowano: <time datetime="2023-10-25">25 października 2023</time> przez <cite>Jan Kowalski</cite></p>
+                </header>
+                
+                <p><strong>Wstęp:</strong> Semantyka w HTML to nie tylko wymóg techniczny, ale fundament dostępnego internetu. W tym artykule omówimy kluczowe aspekty.</p>
+                
+                <h3>Dlaczego &lt;article&gt; jest ważny?</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci.</p>
+                
+                <p>Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis. Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien ultricies dolor, et mollis pede metus eget nisi.</p>
+                
+                <h3>Porównanie technologii</h3>
+                <table>
+                    <caption>Popularność przeglądarek w 2024 roku</caption>
+                    <thead>
+                        <tr>
+                            <th>Przeglądarka</th>
+                            <th>Udział w rynku</th>
+                            <th>Silnik</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chrome</td>
+                            <td>65%</td>
+                            <td>Blink</td>
+                        </tr>
+                        <tr>
+                            <td>Firefox</td>
+                            <td>3%</td>
+                            <td>Gecko</td>
+                        </tr>
+                        <tr>
+                            <td>Safari</td>
+                            <td>18%</td>
+                            <td>WebKit</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Źródło: StatCounter Global Stats</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <h3>Multimedia w HTML</h3>
+                <section>
+                    <h4>Przykładowe Wideo</h4>
+                    <video controls width="100%">
+                        <source src="https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+                        Twoja przeglądarka nie obsługuje tagu video.
+                    </video>
+                </section>
+
+                <section>
+                    <h4>Podcast o kodowaniu (Audio)</h4>
+                    <audio controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                        Twoja przeglądarka nie obsługuje tagu audio.
+                    </audio>
+                </section>
+
+                <p>Podsumowując, lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </article>
+        </div>
+
+        <aside>
+            <h3>Kategorie</h3>
+            <ol>
+                <li>Frontend</li>
+                <li>Backend</li>
+                <li>DevOps</li>
+                <li>Design</li>
+            </ol>
+            
+            <h3>Reklama</h3>
+            <div class="ad-placeholder">
+                <img src="https://picsum.photos/200/300" alt="Baner reklamowy kursu HTML">
+            </div>
+        </aside>
+
+    </main>
+
+    <footer>
+        <p>&copy; <time datetime="2025">2025</time> Jan Kowalski.</p>
+    </footer>
+
+</body>
+</html>
