@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podsumowanie znaczników HTML</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 20px auto;
+    line-height: 1.6;
+  }
+  code {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 1.1em;
+  }
+  dt {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  dd {
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Podsumowanie podstawowych znaczników HTML</h1>
+
+<dl>
+  <dt>de>&lt;!DOCTYPE html&gt;</code></dt>
+  <dd>Deklaracja typu dokumentu, informuje przeglądarkę, że używamy HTML5. Powinna być zawsze na początku pliku.</dd>
+
+  <dt>de>&lt;html lang="pl"&gt;</code></dt>
+  <dd>Główny znacznik otaczający cały dokument. Atrybut de>lang="pl"</code> oznacza język polski.</dd>
+
+  <dt>de>&lt;head&gt;</code></dt>
+  <dd>Sekcja z metadanymi niewidocznymi dla użytkownika, ale ważnymi dla przeglądarki i wyszukiwarek.</dd>
+
+  <dt>de>&lt;meta charset="UTF-8"&gt;</code></dt>
+  <dd>Ustawia kodowanie znaków UTF-8, umożliwiając poprawne wyświetlanie polskich liter.</dd>
+
+  <dt>de>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></dt>
+  <dd>Definiuje skalowanie strony na urządzeniach mobilnych, aby była responsywna.</dd>
+
+  <dt>de>&lt;meta name="description" content="..."&gt;</code></dt>
+  <dd>Opis strony dla wyszukiwarek internetowych.</dd>
+
+  <dt>de>&lt;meta name="author" content="..."&gt;</code></dt>
+  <dd>Informacja o autorze strony.</dd>
+
+  <dt>de>&lt;title&gt;</code></dt>
+  <dd>Tytuł strony wyświetlany na karcie przeglądarki.</dd>
+
+  <dt>de>&lt;body&gt;</code></dt>
+  <dd>Zawartość widoczna dla użytkowników na stronie.</dd>
+
+  <dt>de>&lt;h1&gt;</code></dt>
+  <dd>Najważniejszy nagłówek, główny tytuł artykułu lub strony.</dd>
+
+  <dt>de>&lt;h2&gt;</code></dt>
+  <dd>Nagłówek drugiego poziomu, służy do podziału sekcji.</dd>
+
+  <dt>de>&lt;h3&gt;</code></dt>
+  <dd>Opcjonalny nagłówek trzeciego poziomu, dalszy podział podsekcji.</dd>
+
+  <dt>de>&lt;p&gt;</code></dt>
+  <dd>Paragraf, blok tekstu.</dd>
+
+  <dt>de>&lt;strong&gt;</code></dt>
+  <dd>Pogrubienie tekstu, oznacza ważny fragment.</dd>
+
+  <dt>de>&lt;em&gt;</code></dt>
+  <dd>Kursywa, akcentowanie lub wyróżnienie tekstu.</dd>
+
+  <dt>de>&lt;mark&gt;</code></dt>
+  <dd>Podświetlenie tekstu, wyróżnienie wizualne.</dd>
+
+  <dt>de>&lt;hr&gt;</code></dt>
+  <dd>Linia pozioma, oddziela sekcje.</dd>
+
+  <dt>de>&lt;sup&gt;</code></dt>
+  <dd>Indeks górny, np. potęgi lub symbole chemiczne.</dd>
+
+  <dt>de>&lt;sub&gt;</code></dt>
+  <dd>Indeks dolny, np. numery w wzorach chemicznych.</dd>
+
+  <dt>de>&lt;pre&gt;</code></dt>
+  <dd>Tekst preformatowany, zachowuje odstępy i formatowanie, np. do kodu lub wzorów.</dd>
+
+  <dt>de>&lt;blockquote&gt;</code></dt>
+  <dd>Blok cytatu, wyróżnia dłuższy cytowany tekst w osobnym bloku.</dd>
+
+  <dt>de>&lt;a href="..." target="_blank" rel="noopener noreferrer"&gt;</code></dt>
+  <dd>Link do innej strony; de>target="_blank"</code> otwiera w nowej karcie, a de>rel="noopener noreferrer"</code> zwiększa bezpieczeństwo.</dd>
+
+  <dt>de>&lt;ul&gt;</code></dt>
+  <dd>Lista nieuporządkowana (elementy z punktami).</dd>
+
+  <dt>de>&lt;ol&gt;</code></dt>
+  <dd>Lista uporządkowana (elementy numerowane).</dd>
+
+  <dt>de>&lt;li&gt;</code></dt>
+  <dd>Pojedynczy element listy w de>&lt;ul&gt;</code> lub de>&lt;ol&gt;</code>.</dd>
+
+  <dt>de>&lt;dl&gt;</code></dt>
+  <dd>Lista definicji – lista par: termin + definicja.</dd>
+
+  <dt>de>&lt;dt&gt;</code></dt>
+  <dd>Termin w liście definicji.</dd>
+
+  <dt>de>&lt;dd&gt;</code></dt>
+  <dd>Definicja terminu w liście definicji.</dd>
+
+  <!-- DODANE Z TWOJEGO PRZYKŁADU GALERII -->
+
+  <dt>de>&lt;section&gt;</code></dt>
+  <dd>Logiczna sekcja strony, np. rozdział z obrazami, wideo, audio; pomaga w semantyce i nawigacji.</dd>
+
+  <dt>de>&lt;div&gt;</code></dt>
+  <dd>Ogólny kontener blokowy do grupowania elementów, często używany z klasami do stylowania w CSS.</dd>
+
+  <dt>de>&lt;img src="..." alt="..."&gt;</code></dt>
+  <dd>Wstawia obrazek na stronę; de>src</code> wskazuje adres grafiki, a de>alt</code> opisuje ją tekstowo (dostępność, SEO).</dd>
+
+  <dt>de>&lt;figure&gt;</code></dt>
+  <dd>Kontener na samodzielny element (np. obraz, wykres) wraz z podpisem, traktowany jako jedna całość.</dd>
+
+  <dt>de>&lt;figcaption&gt;</code></dt>
+  <dd>Podpis do elementu de>&lt;figure&gt;</code>, np. opis zdjęcia lub ryciny.</dd>
+
+  <dt>de>&lt;video controls&gt;</code></dt>
+  <dd>Odtwarzacz wideo HTML5; atrybut de>controls</code> dodaje przyciski sterujące (play, pauza itp.).</dd>
+
+  <dt>de>&lt;source src="..." type="..."&gt;</code></dt>
+  <dd>Definiuje pojedyncze źródło pliku multimedialnego (wideo lub audio) z podanym typem MIME; przeglądarka wybiera obsługiwany format.</dd>
+
+  <dt>de>&lt;audio controls&gt;</code></dt>
+  <dd>Odtwarzacz audio HTML5 z wbudowanymi kontrolkami do odtwarzania dźwięku.</dd>
+
+  <dt>de>&lt;iframe src="..."&gt;</code></dt>
+  <dd>Osadza inną stronę (np. mapę Google) wewnątrz strony; działa jak okno z zewnętrzną zawartością.</dd>
+
+</dl>
+
+</body>
+</html>
