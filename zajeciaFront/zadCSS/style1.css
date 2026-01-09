@@ -1,0 +1,24 @@
+/* Plik: style.css */
+
+/* Inne tło niż w sekcji <style> */
+body {
+    background-color: yellow; /* To nie zadziała, bo <style> w HTML ma priorytet */
+    font-family: 'Times New Roman', serif;
+}
+
+/* Inny kolor tekstu */
+p {
+    color: red; /* To zostanie nadpisane przez kolor ciemnoszary z sekcji <style> */
+}
+
+/* Inny styl dla klasy */
+.answer {
+    background-color: pink;
+    border: 1px solid red;
+}
+
+/* Inny styl dla ID */
+#main-title {
+    color: red; /* To zostanie nadpisane przez style="color: blue" w HTML */
+    text-align: left;
+}

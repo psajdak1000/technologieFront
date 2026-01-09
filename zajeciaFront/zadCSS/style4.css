@@ -1,0 +1,262 @@
+/* Reset i podstawy */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Część A.1: Tło strony z gradientem i efektem parallax */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    
+    /* Gradient liniowy, fixed sprawia, że tło "stoi" w miejscu podczas przewijania */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Lekka przezroczystość kontenera */
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   CZĘŚĆ A.2: NAGŁÓWEK HERO
+   ========================================= */
+.hero-header {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    
+    /* Obrazek tła */
+    background-image: url('https://picsum.photos/1200/400?grayscale');
+    background-size: cover;   /* Skalowanie obrazka */
+    background-position: center;
+    
+    /* Overlay z gradientem (nałożony na obrazek za pomocą position: relative) */
+    position: relative;
+}
+
+/* Tworzymy przyciemnienie (Overlay) używając pseudo-elementu ::before */
+.hero-header::before {
+    content: '';
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    /* Półprzezroczysty gradient */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative; /* Aby tekst był NAD overlayem (z-index) */
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+/* =========================================
+   CZĘŚĆ B.6: POSITION STICKY
+   ========================================= */
+.sticky-header {
+    /* Przyklejanie nagłówka */
+    position: sticky;
+    top: 0;
+    background-color: #2c3e50; /* Musi mieć tło, inaczej treść przebija */
+    color: white;
+    padding: 10px 20px;
+    margin: 20px 0;
+    z-index: 10; /* Aby był nad zwykłą treścią */
+    border-left: 5px solid #e74c3c;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   CZĘŚĆ A.3 & B.4: KARTY GALERII I POZYCJONOWANIE
+   ========================================= */
+.gallery-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+/* Wrapper karty - kluczowy dla position: absolute wewnątrz */
+.gallery-card {
+    position: relative; /* RELATIVE - rodzic */
+    width: 300px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px; /* Zaokrąglone rogi */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Efekt uniesienia */
+    overflow: hidden; /* Aby overlay nie wystawał poza zaokrąglenie */
+    transition: transform 0.3s ease;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px); /* Lekkie uniesienie przy najechaniu */
+}
+
+.gallery-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Badge (Etykieta) - Część B.4 */
+.badge {
+    position: absolute; /* ABSOLUTE - dziecko */
+    top: 20px;
+    right: 20px;
+    background-color: #3498db;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 5;
+}
+
+/* Hover Overlay - Część B.4 */
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Czarne półprzezroczyste tło */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Ukrywanie domyślne */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Pokazywanie overlay po najechaniu na kartę */
+.gallery-card:hover .card-overlay {
+    opacity: 1;
+}
+
+/* =========================================
+   CZĘŚĆ B.5: POSITION FIXED (Elementy stałe)
+   ========================================= */
+/* Pasek boczny social media */
+.social-sidebar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%); /* Centrowanie w pionie */
+    background-color: #333;
+    z-index: 100;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #555;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.social-icon:hover {
+    background-color: #e74c3c;
+}
+
+/* Przycisk Powrót do góry */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #e74c3c;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 100;
+    scroll-behavior: smooth;
+}
+
+/* =========================================
+   CZĘŚĆ C: LIGHTBOX (Z-INDEX & :TARGET)
+   ========================================= */
+/* Tło modala (ciemne) */
+.lightbox-modal {
+    display: none; /* Domyślnie ukryty */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999; /* Bardzo wysoko, nad wszystkim */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Magia CSS: kiedy ID w URL pasuje do ID elementu (#lightbox-1) */
+.lightbox-modal:target {
+    display: flex;
+}
+
+.lightbox-content img {
+    max-width: 90vw;
+    max-height: 80vh;
+    border: 5px solid white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    animation: zoomIn 0.3s ease;
+}
+
+/* Przycisk zamknięcia */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: white;
+    font-size: 40px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Prosta animacja pojawiania się */
+@keyframes zoomIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsywność dla wideo/mapy */
+.media-container {
+    max-width: 100%;
+    overflow: hidden;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

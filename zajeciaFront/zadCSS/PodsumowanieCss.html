@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podsumowanie właściwości CSS (Zadania 1-5)</title>
+<style>
+    /* Lekka stylizacja dla czytelności podsumowania */
+    body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+    code { background-color: #f4f4f4; padding: 2px 5px; border-radius: 4px; font-weight: bold; color: #c7254e; }
+    dt { margin-top: 15px; font-size: 1.1em; }
+    dd { margin-left: 20px; color: #333; }
+    h2 { border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<h1>Podsumowanie poznanych technik CSS</h1>
+
+<h2>1. Podstawy i Selektory (Zadanie 1)</h2>
+<dl>
+    <dt><code>&lt;style&gt;...&lt;/style&gt;</code></dt>
+    <dd>Definiuje style wewnętrzne w sekcji head dokumentu HTML.</dd>
+
+    <dt><code>&lt;link rel="stylesheet" href="..."&gt;</code></dt>
+    <dd>Podłącza zewnętrzny plik CSS; jest to zalecana metoda stylowania stron.</dd>
+
+    <dt><code>style="..."</code></dt>
+    <dd>Style inline wpisane bezpośrednio w tagu HTML; mają najwyższy priorytet, ale należy ich unikać.</dd>
+
+    <dt><code>.klasa</code></dt>
+    <dd>Selektor klasy (kropka); wybiera wszystkie elementy z daną klasą (np. <code>class="btn"</code>).</dd>
+
+    <dt><code>#id</code></dt>
+    <dd>Selektor identyfikatora (płotek); wybiera jeden unikalny element (np. <code>id="header"</code>).</dd>
+</dl>
+
+<h2>2. Typografia i Kolory (Zadanie 2)</h2>
+<dl>
+    <dt><code>font-family</code></dt>
+    <dd>Określa krój czcionki. Warto podawać kilka po przecinku jako "fallback" (np. 'Arial', sans-serif).</dd>
+
+    <dt><code>font-weight</code></dt>
+    <dd>Grubość czcionki (np. <code>400</code> to normalny, <code>700</code> to pogrubiony).</dd>
+
+    <dt><code>text-align</code></dt>
+    <dd>Wyrównanie tekstu: <code>left</code>, <code>center</code>, <code>right</code> lub <code>justify</code> (wyjustowanie).</dd>
+
+    <dt><code>line-height</code></dt>
+    <dd>Wysokość linii (interlinia); wartość np. <code>1.6</code> znacznie poprawia czytelność tekstu.</dd>
+
+    <dt><code>color: hsla(hue, sat, light, alpha)</code></dt>
+    <dd>Model kolorów HSL, gdzie łatwo sterować odcieniem i jasnością oraz przezroczystością (Alpha).</dd>
+</dl>
+
+<h2>3. Box Model (Zadanie 3)</h2>
+<dl>
+    <dt><code>box-sizing: border-box</code></dt>
+    <dd>Kluczowa właściwość! Sprawia, że padding i border są wliczane w szerokość elementu, co zapobiega "rozjeżdżaniu się" układu.</dd>
+
+    <dt><code>padding</code></dt>
+    <dd>Odstęp wewnętrzny – przestrzeń między treścią elementu a jego obramowaniem.</dd>
+
+    <dt><code>margin</code></dt>
+    <dd>Odstęp zewnętrzny – przestrzeń między elementem a innymi elementami na stronie.</dd>
+
+    <dt><code>border-collapse: collapse</code></dt>
+    <dd>Sprawia, że sąsiednie krawędzie komórek tabeli łączą się w jedną linię.</dd>
+
+    <dt><code>:nth-child(odd/even)</code></dt>
+    <dd>Pseudo-klasa wybierająca co drugi element (np. wiersz tabeli), przydatna do tworzenia pasów ("zebra stripes").</dd>
+</dl>
+
+<h2>4. Pozycjonowanie i Tła (Zadanie 4)</h2>
+<dl>
+    <dt><code>position: relative</code></dt>
+    <dd>Pozycjonowanie względem siebie samego, ale przede wszystkim tworzy punkt odniesienia dla dzieci z <code>absolute</code>.</dd>
+
+    <dt><code>position: absolute</code></dt>
+    <dd>Ustawia element w konkretnym miejscu względem najbliższego rodzica z <code>position: relative</code> (np. przycisk w rogu karty).</dd>
+
+    <dt><code>position: fixed</code></dt>
+    <dd>Przykleja element do okna przeglądarki (np. menu nawigacyjne lub strzałka "w górę"); nie przesuwa się przy scrollowaniu.</dd>
+
+    <dt><code>position: sticky</code></dt>
+    <dd>Element zachowuje się normalnie, aż do momentu przewinięcia do krawędzi ekranu – wtedy się "przykleja".</dd>
+
+    <dt><code>z-index</code></dt>
+    <dd>Określa kolejność warstw (oś Z). Im wyższa liczba, tym element jest "bliżej" użytkownika (przykrywa inne).</dd>
+
+    <dt><code>background-size: cover</code></dt>
+    <dd>Skaluje obraz tła tak, aby pokrył cały element, przycinając go w razie potrzeby.</dd>
+</dl>
+
+<h2>5. Formularze i Interakcja (Zadanie 5)</h2>
+<dl>
+    <dt><code>:hover</code></dt>
+    <dd>Styl elementu po najechaniu na niego myszką.</dd>
+
+    <dt><code>:focus</code></dt>
+    <dd>Styl elementu aktywnego (np. pola, w którym piszemy). Ważne, aby nie usuwać <code>outline</code> bez zastępstwa.</dd>
+
+    <dt><code>:not(:placeholder-shown)</code></dt>
+    <dd>Zaawansowany selektor sprawdzający, czy pole NIE jest puste (czy użytkownik coś wpisał).</dd>
+
+    <dt><code>::before / ::after</code></dt>
+    <dd>Pseudo-elementy pozwalające wstawić treść dekoracyjną (np. gwiazdkę, ikonę) z poziomu CSS, bez zmian w HTML.</dd>
+
+    <dt><code>cursor: pointer</code></dt>
+    <dd>Zmienia kursor myszy na "łapkę", sugerując, że element jest klikalny (obowiązkowe dla przycisków).</dd>
+</dl>
+
+</body>
+</html>

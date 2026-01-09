@@ -1,0 +1,170 @@
+/* RESET I KONFIGURACJA OGÓLNA */
+* {
+    /* Wskazówka: Reset Box Modelu - klucz do łatwego układania stron */
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    color: #444;
+}
+
+/* =========================================
+   CZĘŚĆ A: STYLIZACJA LIST
+   ========================================= */
+
+/* 1. Lista nieuporządkowana (UL) */
+.styled-ul {
+    list-style-type: square; /* Własny marker (kwadrat) */
+    padding-left: 20px;
+}
+
+.styled-ul li {
+    padding: 10px;       /* Padding dla elementów */
+    margin-bottom: 5px;  /* Margin między elementami */
+    border-radius: 4px;
+}
+
+/* Tło dla co drugiego elementu (nieparzyste) */
+.styled-ul li:nth-child(odd) {
+    background-color: #e3f2fd; /* Jasnoniebieski */
+}
+
+/* 2. Lista uporządkowana (OL) */
+.styled-ol {
+    list-style-type: upper-roman; /* Rzymskie cyfry (I, II, III) */
+    border-left: 5px solid #ff9800; /* Pomarańczowa linia z lewej */
+    padding-left: 40px; /* Odsunięcie tekstu od linii */
+    background-color: #fff3e0;
+}
+
+.styled-ol li {
+    padding: 8px 0;
+    font-weight: 500;
+}
+
+/* 3. Lista definicji (DL) */
+.styled-dl dt {
+    /* Wyróżnienie terminu */
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    margin-top: 15px;
+    display: inline-block; /* Tło tylko pod tekstem */
+    border-radius: 3px;
+}
+
+.styled-dl dd {
+    /* Wcięcie i separator */
+    margin-left: 20px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px dashed #ccc; /* Separator */
+    color: #555;
+}
+
+/* =========================================
+   CZĘŚĆ B: STYLIZACJA TABELI
+   ========================================= */
+
+.styled-table {
+    width: 100%;           /* Szerokość 100% kontenera */
+    max-width: 100%;
+    border-collapse: collapse; /* Kluczowe: łączenie ramek */
+    margin: 20px 0;
+    font-size: 0.9em;
+    /* Cień dla całej tabeli */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden; /* Zaokrąglenie rogów z border-radius wymaga overflow */
+    border-radius: 10px; 
+}
+
+/* 5. Nagłówki (thead/th) */
+.styled-table thead tr {
+    background-color: #009879; /* Wyróżniający kolor (zielony morski) */
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th, 
+.styled-table td {
+    padding: 12px 15px; /* Padding dla czytelności */
+}
+
+.styled-table th {
+    border-bottom: 2px solid #007b63; /* Wyrazisty border pod nagłówkiem */
+}
+
+/* 6. Komórki i Zebra Stripes */
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Zebra stripes - parzyste wiersze szare */
+.styled-table tbody tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+/* Efekt Hover na wierszu */
+.styled-table tbody tr:hover {
+    background-color: #d1e7dd; /* Podświetlenie po najechaniu */
+    cursor: default;
+    transform: scale(1.01); /* Lekkie powiększenie (opcjonalny bajer) */
+    transition: 0.2s;
+}
+
+/* =========================================
+   CZĘŚĆ C: BOX MODEL DEMO
+   ========================================= */
+
+.demo-wrapper {
+    display: flex; /* Ustawienie divów obok siebie */
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Żeby na telefonie spadły pod siebie */
+}
+
+/* Styl bazowy dla obu pudełek */
+.box {
+    width: 300px;
+    padding: 20px;
+    border: 10px solid #2196F3; /* Gruby niebieski border */
+    background-color: #e3f2fd;
+    text-align: center;
+}
+
+/* PUDEŁKO 1: CONTENT-BOX (Domyślny stary model) */
+.content-box {
+    /* Musimy nadpisać globalny reset dla celów edukacyjnych */
+    box-sizing: content-box; 
+    border-color: #ff5252; /* Czerwony border dla odróżnienia */
+}
+
+/* PUDEŁKO 2: BORDER-BOX (Nowoczesny model) */
+.border-box {
+    box-sizing: border-box;
+    border-color: #4caf50; /* Zielony border dla odróżnienia */
+}

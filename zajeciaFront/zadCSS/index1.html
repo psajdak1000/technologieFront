@@ -1,36 +1,69 @@
 <!DOCTYPE html>
 <html lang="pl">
-    <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content=""width=device-width, initial-scale="1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="pierwsze zajecia frontend.">
     <meta name="author" content="Michal Sachajdak">
-    <title>Index11.10</title>
-    <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
-        <h1>witaj strono!</h1>
-        <p>zajecia 11.10</p>
-        <p> Dlaczego DOCTYPE jest ważny?<p></p>
-           <p> Mówi przeglądarce jaką wersję języka html powinna interpretować, 
-            pozwala to wyswietlić storne poprawnie. Bez tej deklaracji przeglądarka może
-            przełączyć się w tryb zgodności ze starszą wersją,co będzie powodować błędy 
-            i rozbieżnośći w wyświetlaniu.
-        </p>
-        <p>Jaką rolę pełni sekcja head?</p>
-           <p> zawiera informacje ważne do działania i optymalizacji strony takie jakątytuł strony, 
-            metadane (jak kodowanie czy opis), linki do stylów i skryptów, 
-            które pomagają przeglądarce dobrze zinterpretować 
-            i przygotować zawartość strony do wyświetlenia
-        </p>
+    <title>Index11.10 - Zadanie CSS</title>
 
-        <p>Co to są meta tagi i do czego służą?</p>
-           <p> są to wazne informacje dla przeglądarki, takie jak typ kodowania znaków np.UTf-8,
-            sposób dopasowania, tzw responsywność do urządzeń mobilnych i różnych wielkości ekranów(viewport),
-            i opis strony dla wyszukiwarek oraz autor (description),
-            dzieki nim strona wyswietla się poprawnie , jest lepiej indeksowana dla wyszukiwarek,
-            zapewnia lepsza responsywnosc 
+    <link rel="stylesheet" href="style1.css">
 
-        </p>
-    </body>
+    <style>
+        /* Styl dla body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Jasnoszary */
+        }
+
+        /* Selektor elementu (wszystkie paragrafy) */
+        p {
+            color: #333333; /* Ciemnoszary */
+            line-height: 1.6;
+        }
+
+        /* Selektor klasy (dla odpowiedzi) */
+        .answer {
+            background-color: #e8f5e9; /* Jasnozielony */
+            padding: 10px;
+            border-left: 5px solid green;
+        }
+
+        /* Selektor ID (dla nagłówka - choć zostanie nadpisany przez inline) */
+        #main-title {
+            text-align: center;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="main-title" style="color: blue;">witaj strono!</h1>
+
+    <p style="font-size: 20px; font-weight: bold;">zajecia 11.10</p>
+
+    <p class="question">Dlaczego DOCTYPE jest ważny?</p>
+    <p class="answer">
+        Mówi przeglądarce jaką wersję języka html powinna interpretować, 
+        pozwala to wyświetlić stronę poprawnie. Bez tej deklaracji przeglądarka może
+        przełączyć się w tryb zgodności ze starszą wersją, co będzie powodować błędy 
+        i rozbieżności w wyświetlaniu.
+    </p>
+
+    <p class="question">Jaką rolę pełni sekcja head?</p>
+    <p class="answer">
+        Zawiera informacje ważne do działania i optymalizacji strony takie jak tytuł strony, 
+        metadane (jak kodowanie czy opis), linki do stylów i skryptów, 
+        które pomagają przeglądarce dobrze zinterpretować 
+        i przygotować zawartość strony do wyświetlenia.
+    </p>
+
+    <p class="question">Co to są meta tagi i do czego służą?</p>
+    <p class="answer">
+        Są to ważne informacje dla przeglądarki, takie jak typ kodowania znaków np. UTF-8,
+        sposób dopasowania (viewport), opis strony dla wyszukiwarek oraz autor.
+        Dzięki nim strona wyświetla się poprawnie, jest lepiej indeksowana i responsywna.
+    </p>
+
+</body>
 </html>

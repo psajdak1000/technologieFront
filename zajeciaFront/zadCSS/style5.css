@@ -1,0 +1,370 @@
+/* Reset i Ogólne */
+:root {
+    --primary-color: #4a90e2;
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --text-color: #333;
+    --bg-color: #f4f7f6;
+}
+
+* {
+    box-sizing: border-box; /* Kluczowe dla Box Model */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+/* =========================================
+   CZĘŚĆ A: PODSTAWOWA STYLIZACJA
+   ========================================= */
+
+/* A.4: Fieldset i Legend */
+fieldset {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+legend {
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 0 10px;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* C.14: Pierwsza litera legendy większa */
+legend::first-letter {
+    font-size: 1.3em;
+    color: #2c3e50;
+}
+
+/* Grupowanie pól */
+.form-group {
+    margin-bottom: 20px;
+    position: relative; /* Potrzebne do pozycjonowania ikon */
+    transition: background-color 0.3s;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* A.2: Etykiety */
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+/* A.1: Pola tekstowe i textarea */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="date"],
+input[type="url"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* A.1: Stylizacja placeholder */
+::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* A.3: Przyciski */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer; /* A.3 */
+    transition: transform 0.1s, background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+/* =========================================
+   CZĘŚĆ B: PSEUDO-KLASY STANÓW
+   ========================================= */
+
+/* B.5: Hover na elementach interaktywnych */
+input:not(:disabled):hover, 
+select:not(:disabled):hover,
+textarea:not(:disabled):hover {
+    border-color: #b0bec5;
+}
+
+button:hover {
+    filter: brightness(110%);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* B.6: Focus (Accessibility) */
+input:focus, 
+select:focus, 
+textarea:focus {
+    outline: none; /* Usuwamy domyślny outline */
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2); /* Własny focus ring */
+}
+
+/* B.7: Focus-within (Podświetlenie całej grupy) */
+.form-group:focus-within {
+    background-color: rgba(74, 144, 226, 0.05);
+}
+
+/* B.8: Walidacja :valid / :invalid */
+/* UX Trick: :not(:placeholder-shown) sprawia, że walidacja działa dopiero jak user zacznie pisać */
+input:not(:placeholder-shown):not(:focus):valid {
+    border-color: var(--success-color);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232ecc71'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+input:not(:placeholder-shown):not(:focus):invalid {
+    border-color: var(--error-color);
+    animation: shake 0.3s; /* Opcjonalna animacja trzęsienia */
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* C.13: Ikona walidacji za pomocą ::after (wymaga nowoczesnego CSS :has lub hacka) */
+/* Ponieważ input nie może mieć ::after, używamy :has na rodzicu (nowoczesne przeglądarki) */
+.form-group:has(input:not(:placeholder-shown):invalid)::after {
+    content: '✗';
+    position: absolute;
+    right: 15px;
+    top: 40px; /* Dostosowanie do wysokości labela */
+    color: var(--error-color);
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* B.10: :disabled */
+input:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+/* =========================================
+   CZĘŚĆ C: PSEUDO-ELEMENTY
+   ========================================= */
+
+/* C.12: Gwiazdka przy required */
+/* Instrukcja mówi ::before, zazwyczaj jest after, ale robimy zgodnie z poleceniem */
+label.required::before {
+    content: "*";
+    color: var(--error-color);
+    margin-right: 4px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+
+/* C.15: CUSTOM CHECKBOX & RADIO (Najtrudniejsza część) */
+
+/* 1. Ukrywamy domyślny input, ale zostawiamy go dostępnym dla klawiatury */
+.custom-checkbox, .custom-radio {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+/* 2. Stylujemy Label, który będzie klikalny */
+.custom-checkbox + label, .custom-radio + label {
+    position: relative;
+    padding-left: 30px; /* Miejsce na nasz kwadracik */
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 15px;
+    line-height: 24px;
+    user-select: none;
+}
+
+/* 3. Tworzymy "pudełko" za pomocą ::before */
+.custom-checkbox + label::before, 
+.custom-radio + label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #bbb;
+    background: white;
+    transition: all 0.2s;
+}
+
+/* Radio musi być okrągłe */
+.custom-radio + label::before {
+    border-radius: 50%;
+}
+
+/* Checkbox lekko zaokrąglony */
+.custom-checkbox + label::before {
+    border-radius: 4px;
+}
+
+/* 4. Stan :checked - zmiana tła i ramki */
+.custom-checkbox:checked + label::before,
+.custom-radio:checked + label::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 5. Stan :focus (dostępność!) - obrysowanie labela */
+.custom-checkbox:focus + label::before,
+.custom-radio:focus + label::before {
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+/* 6. Dodajemy znaczek "ptaszka" lub "kropki" za pomocą ::after */
+.custom-checkbox:checked + label::after {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    top: -2px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.custom-radio:checked + label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+.custom-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+/* =========================================
+   CZĘŚĆ D: BONUS - CUSTOM RANGE SLIDER
+   ========================================= */
+
+input[type="range"] {
+    -webkit-appearance: none; /* Wyłącza domyślny styl przeglądarki */
+    width: 100%;
+    background: transparent;
+    margin: 10px 0;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+/* Pasek (Track) */
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #ddeeff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Suwak (Thumb) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    margin-top: -9px; /* Pozycjonowanie w pionie (połowa wysokości kciuka - połowa wysokości paska) */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border: 2px solid white;
+    transition: transform 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Styl dla Firefoxa (dla kompletności) */
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #ddeeff;
+    border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 24px;
+    width: 24px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+}

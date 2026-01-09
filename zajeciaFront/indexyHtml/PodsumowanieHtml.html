@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wielkie Podsumowanie HTML5</title>
+<style>
+    body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; }
+    h1 { text-align: center; color: #2c3e50; }
+    h2 { background-color: #f0f0f0; padding: 10px; border-left: 5px solid #3498db; margin-top: 40px; }
+    dt { font-weight: bold; margin-top: 15px; font-family: monospace; font-size: 1.1em; color: #e74c3c; }
+    dd { margin-left: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+    code { background-color: #f9f9f9; padding: 2px 4px; border-radius: 3px; color: #c0392b; }
+</style>
+</head>
+<body>
+
+<h1>Kompendium wiedzy: Znaczniki HTML</h1>
+
+<h2>1. Anatomia i Metadane (Zadanie 1)</h2>
+<dl>
+    <dt><code>&lt;!DOCTYPE html&gt;</code></dt>
+    <dd>Obowiązkowa deklaracja na samym początku pliku. Informuje przeglądarkę, że używamy standardu HTML5.</dd>
+
+    <dt><code>&lt;html lang="pl"&gt;</code></dt>
+    <dd>Korzeń (root) dokumentu. Atrybut <code>lang</code> jest kluczowy dla wyszukiwarek i czytników ekranowych.</dd>
+
+    <dt><code>&lt;head&gt;</code></dt>
+    <dd>Mózg strony. Zawiera ustawienia, linki do stylów i skryptów. Niewidoczny bezpośrednio na stronie.</dd>
+
+    <dt><code>&lt;meta charset="UTF-8"&gt;</code></dt>
+    <dd>Kluczowe kodowanie znaków. Zapobiega wyświetlaniu "krzaczków" zamiast polskich liter.</dd>
+
+    <dt><code>&lt;meta name="viewport" content="..."&gt;</code></dt>
+    <dd>Niezbędne dla RWD (Responsywności). Mówi telefonowi, aby nie pomniejszał strony, lecz dostosował ją do szerokości ekranu.</dd>
+
+    <dt><code>&lt;link rel="stylesheet" href="..."&gt;</code></dt>
+    <dd>Służy do podpięcia zewnętrznego pliku CSS do dokumentu HTML.</dd>
+    
+    <dt><code>&lt;title&gt;</code></dt>
+    <dd>Tytuł widoczny na pasku karty przeglądarki oraz w wynikach wyszukiwania Google.</dd>
+
+    <dt><code>&lt;body&gt;</code></dt>
+    <dd>Ciało strony. Wszystko, co znajduje się tutaj, jest widoczne dla użytkownika.</dd>
+</dl>
+
+<h2>2. Tekst i Semantyka (Zadanie 2)</h2>
+<dl>
+    <dt><code>&lt;h1&gt;</code> do <code>&lt;h6&gt;</code></dt>
+    <dd>Nagłówki. H1 jest najważniejszy (tytuł strony), H6 najmniej ważny. Budują hierarchię treści.</dd>
+
+    <dt><code>&lt;p&gt;</code></dt>
+    <dd>Paragraf (akapit tekstu). Podstawowy blok tekstowy.</dd>
+    
+    <dt><code>&lt;br&gt;</code></dt>
+    <dd>Pojedynczełamanie linii (bez zamykania). Używane rzadko, np. w wierszach.</dd>
+
+    <dt><code>&lt;strong&gt;</code> oraz <code>&lt;em&gt;</code></dt>
+    <dd>Semantyczne wyróżnienie. <strong>Strong</strong> to "ważne" (pogrubienie), <em>Em</em> to "akcent" (kursywa).</dd>
+
+    <dt><code>&lt;a href="..."&gt;</code></dt>
+    <dd>Kotwica (Link). Tworzy hiperłącze. Atrybut <code>target="_blank"</code> otwiera w nowej karcie.</dd>
+
+    <dt><code>&lt;span&gt;</code></dt>
+    <dd>Uniwersalny kontener liniowy. Służy do stylowania fragmentu tekstu wewnątrz paragrafu.</dd>
+
+    <dt><code>&lt;div&gt;</code></dt>
+    <dd>Uniwersalny kontener blokowy. Służy do grupowania elementów w celu ich ułożenia (layoutu).</dd>
+
+    <dt><code>&lt;main&gt;</code></dt>
+    <dd>Oznacza główną, unikalną treść danej podstrony.</dd>
+    
+    <dt><code>&lt;header&gt;</code> i <code>&lt;footer&gt;</code></dt>
+    <dd>Semantyczne kontenery na nagłówek (np. logo, menu) i stopkę strony.</dd>
+    
+    <dt><code>&lt;nav&gt;</code></dt>
+    <dd>Sekcja zawierająca główne linki nawigacyjne.</dd>
+</dl>
+
+<h2>3. Listy i Tabele (Zadanie 3)</h2>
+<dl>
+    <dt><code>&lt;ul&gt;</code> i <code>&lt;li&gt;</code></dt>
+    <dd>Lista nieuporządkowana (kropki). Każdy punkt to <code>li</code>.</dd>
+
+    <dt><code>&lt;ol&gt;</code></dt>
+    <dd>Lista uporządkowana (numery: 1, 2, 3...).</dd>
+
+    <dt><code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code>, <code>&lt;dd&gt;</code></dt>
+    <dd>Lista definicji (taka jak ta tutaj). DT to termin, DD to opis.</dd>
+
+    <dt><code>&lt;table&gt;</code></dt>
+    <dd>Główny znacznik tabeli.</dd>
+
+    <dt><code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code></dt>
+    <dd>Sekcje tabeli: nagłówek tabeli, ciało z danymi, stopka tabeli.</dd>
+
+    <dt><code>&lt;tr&gt;</code></dt>
+    <dd>Wiersz tabeli (Table Row).</dd>
+
+    <dt><code>&lt;th&gt;</code></dt>
+    <dd>Komórka nagłówkowa (Table Header) – domyślnie pogrubiona i wyśrodkowana.</dd>
+
+    <dt><code>&lt;td&gt;</code></dt>
+    <dd>Zwykła komórka danych (Table Data).</dd>
+</dl>
+
+<h2>4. Multimedia (Zadanie 4)</h2>
+<dl>
+    <dt><code>&lt;img src="..." alt="..."&gt;</code></dt>
+    <dd>Obrazek. <code>alt</code> jest wymagany dla dostępności (czytany przez screen readery).</dd>
+
+    <dt><code>&lt;figure&gt;</code> i <code>&lt;figcaption&gt;</code></dt>
+    <dd>Semantyczny sposób wstawiania obrazka z widocznym podpisem pod spodem.</dd>
+
+    <dt><code>&lt;video controls&gt;</code></dt>
+    <dd>Odtwarzacz wideo. Może zawierać w środku tagi <code>&lt;source&gt;</code> z różnymi formatami plików.</dd>
+
+    <dt><code>&lt;iframe&gt;</code></dt>
+    <dd>"Okno na świat". Pozwala osadzić inną stronę (np. YouTube, Google Maps) wewnątrz naszej.</dd>
+</dl>
+
+<h2>5. Formularze (Zadanie 5)</h2>
+<dl>
+    <dt><code>&lt;form action="..." method="..."&gt;</code></dt>
+    <dd>Kontener formularza. <code>method="post"</code> służy do bezpiecznego wysyłania danych.</dd>
+
+    <dt><code>&lt;fieldset&gt;</code> i <code>&lt;legend&gt;</code></dt>
+    <dd>Grupowanie pól formularza w ramkę z podpisem (legendą).</dd>
+
+    <dt><code>&lt;label for="..."&gt;</code></dt>
+    <dd>Etykieta pola. Atrybut <code>for</code> musi pasować do <code>id</code> pola input. Kliknięcie w napis aktywuje pole.</dd>
+
+    <dt><code>&lt;input type="text"&gt;</code></dt>
+    <dd>Najważniejszy tag formularza. Typ zmienia jego działanie: <code>password</code>, <code>email</code>, <code>date</code>, <code>checkbox</code>, <code>radio</code>, <code>file</code>, <code>range</code>.</dd>
+
+    <dt><code>&lt;textarea&gt;</code></dt>
+    <dd>Wielowierszowe pole tekstowe (np. na treść wiadomości).</dd>
+
+    <dt><code>&lt;select&gt;</code> i <code>&lt;option&gt;</code></dt>
+    <dd>Lista rozwijana (dropdown) z opcjami do wyboru.</dd>
+
+    <dt><code>&lt;button type="submit"&gt;</code></dt>
+    <dd>Przycisk wysyłający formularz.</dd>
+
+    <dt>Ważne atrybuty formularzy:</dt>
+    <dd>
+        <ul>
+            <li><code>required</code> – pole wymagane</li>
+            <li><code>placeholder</code> – tekst podpowiedzi w tle</li>
+            <li><code>disabled</code> – pole zablokowane</li>
+            <li><code>name</code> – nazwa zmiennej wysyłanej do serwera</li>
+        </ul>
+    </dd>
+</dl>
+
+<h2>6. Ważne atrybuty globalne</h2>
+<dl>
+    <dt><code>class="..."</code></dt>
+    <dd>Nadaje nazwę klasy (może się powtarzać na wielu elementach). Główne narzędzie do stylowania w CSS.</dd>
+
+    <dt><code>id="..."</code></dt>
+    <dd>Unikalny identyfikator elementu (może wystąpić tylko raz na stronie). Używany do kotwic, JS i labeli.</dd>
+</dl>
+
+</body>
+</html>
