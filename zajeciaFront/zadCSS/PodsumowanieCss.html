@@ -3,111 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podsumowanie właściwości CSS (Zadania 1-5)</title>
+<title>Pełne Podsumowanie CSS (Zadania 1-5)</title>
 <style>
     /* Lekka stylizacja dla czytelności podsumowania */
-    body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+    body { font-family: sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; }
     code { background-color: #f4f4f4; padding: 2px 5px; border-radius: 4px; font-weight: bold; color: #c7254e; }
-    dt { margin-top: 15px; font-size: 1.1em; }
-    dd { margin-left: 20px; color: #333; }
-    h2 { border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
+    dt { margin-top: 15px; font-size: 1.1em; color: #0056b3; }
+    dd { margin-left: 20px; color: #444; border-left: 3px solid #eee; padding-left: 10px; }
+    h2 { border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 40px; color: #222; }
+    .new { color: #27ae60; font-size: 0.8em; vertical-align: middle; margin-left: 5px; }
 </style>
 </head>
 <body>
 
-<h1>Podsumowanie poznanych technik CSS</h1>
+<h1>Podsumowanie poznanych technik CSS (Kompletne)</h1>
+<p>Poniżej znajduje się lista wszystkich właściwości użytych w zadaniach 1-5. Elementy dodane teraz oznaczono jako <span class="new">(DODANE)</span>.</p>
 
 <h2>1. Podstawy i Selektory (Zadanie 1)</h2>
 <dl>
-    <dt><code>&lt;style&gt;...&lt;/style&gt;</code></dt>
-    <dd>Definiuje style wewnętrzne w sekcji head dokumentu HTML.</dd>
-
-    <dt><code>&lt;link rel="stylesheet" href="..."&gt;</code></dt>
-    <dd>Podłącza zewnętrzny plik CSS; jest to zalecana metoda stylowania stron.</dd>
-
-    <dt><code>style="..."</code></dt>
-    <dd>Style inline wpisane bezpośrednio w tagu HTML; mają najwyższy priorytet, ale należy ich unikać.</dd>
+    <dt><code>&lt;style&gt;</code> / <code>&lt;link&gt;</code> / <code>style="..."</code></dt>
+    <dd>Trzy metody dodawania CSS: wewnętrzna, zewnętrzna (zalecana) i liniowa (inline).</dd>
 
     <dt><code>.klasa</code></dt>
-    <dd>Selektor klasy (kropka); wybiera wszystkie elementy z daną klasą (np. <code>class="btn"</code>).</dd>
+    <dd>Selektor klasy (kropka); wybiera wiele elementów.</dd>
 
     <dt><code>#id</code></dt>
-    <dd>Selektor identyfikatora (płotek); wybiera jeden unikalny element (np. <code>id="header"</code>).</dd>
+    <dd>Selektor identyfikatora (płotek); wybiera jeden unikalny element.</dd>
+
+    <dt><code>* { ... }</code> <span class="new">(DODANE)</span></dt>
+    <dd>Selektor uniwersalny. Używaliśmy go do resetowania Box Modelu (<code>box-sizing: border-box</code>).</dd>
 </dl>
 
-<h2>2. Typografia i Kolory (Zadanie 2)</h2>
+<h2>2. Typografia i Wygląd Tekstu (Zadanie 2)</h2>
 <dl>
     <dt><code>font-family</code></dt>
-    <dd>Określa krój czcionki. Warto podawać kilka po przecinku jako "fallback" (np. 'Arial', sans-serif).</dd>
+    <dd>Krój czcionki (w tym import Google Fonts).</dd>
 
     <dt><code>font-weight</code></dt>
-    <dd>Grubość czcionki (np. <code>400</code> to normalny, <code>700</code> to pogrubiony).</dd>
+    <dd>Grubość znaków (np. 300, 400, 700).</dd>
 
     <dt><code>text-align</code></dt>
-    <dd>Wyrównanie tekstu: <code>left</code>, <code>center</code>, <code>right</code> lub <code>justify</code> (wyjustowanie).</dd>
+    <dd>Wyrównanie tekstu (left, center, right, justify).</dd>
 
     <dt><code>line-height</code></dt>
-    <dd>Wysokość linii (interlinia); wartość np. <code>1.6</code> znacznie poprawia czytelność tekstu.</dd>
+    <dd>Interlinia. Kluczowa dla czytelności długich bloków tekstu.</dd>
 
-    <dt><code>color: hsla(hue, sat, light, alpha)</code></dt>
-    <dd>Model kolorów HSL, gdzie łatwo sterować odcieniem i jasnością oraz przezroczystością (Alpha).</dd>
+    <dt><code>text-transform</code> <span class="new">(DODANE)</span></dt>
+    <dd>Zmiana wielkości liter (<code>uppercase</code> - wielkie, <code>capitalize</code> - jak w nazwach własnych).</dd>
+
+    <dt><code>text-decoration</code> <span class="new">(DODANE)</span></dt>
+    <dd>Dekoracja tekstu. Używane głównie do usuwania podkreślenia z linków (<code>none</code>) lub dodawania go na hover.</dd>
+    
+    <dt><code>color: hsla(...)</code></dt>
+    <dd>Kolor w formacie Hue, Saturation, Lightness, Alpha (przezroczystość).</dd>
 </dl>
 
-<h2>3. Box Model (Zadanie 3)</h2>
+<h2>3. Box Model i Obramowania (Zadanie 3)</h2>
 <dl>
     <dt><code>box-sizing: border-box</code></dt>
-    <dd>Kluczowa właściwość! Sprawia, że padding i border są wliczane w szerokość elementu, co zapobiega "rozjeżdżaniu się" układu.</dd>
+    <dd>Zmienia sposób liczenia szerokości elementu, wliczając padding i border do środka.</dd>
 
-    <dt><code>padding</code></dt>
-    <dd>Odstęp wewnętrzny – przestrzeń między treścią elementu a jego obramowaniem.</dd>
+    <dt><code>padding</code> / <code>margin</code></dt>
+    <dd>Odstępy wewnętrzne (w środku ramki) i zewnętrzne (poza ramką).</dd>
 
-    <dt><code>margin</code></dt>
-    <dd>Odstęp zewnętrzny – przestrzeń między elementem a innymi elementami na stronie.</dd>
+    <dt><code>border-radius</code> <span class="new">(DODANE)</span></dt>
+    <dd>Zaokrąglenie rogów elementu (używane w kartach, przyciskach i inputach).</dd>
 
-    <dt><code>border-collapse: collapse</code></dt>
-    <dd>Sprawia, że sąsiednie krawędzie komórek tabeli łączą się w jedną linię.</dd>
+    <dt><code>box-shadow</code> <span class="new">(DODANE)</span></dt>
+    <dd>Cień rzucany przez element. Nadaje głębię (efekt uniesienia karty lub focusu w formularzu).</dd>
 
-    <dt><code>:nth-child(odd/even)</code></dt>
-    <dd>Pseudo-klasa wybierająca co drugi element (np. wiersz tabeli), przydatna do tworzenia pasów ("zebra stripes").</dd>
+    <dt><code>list-style-type</code> <span class="new">(DODANE)</span></dt>
+    <dd>Zmiana punktorów listy (np. na kwadraty, rzymskie cyfry lub usunięcie ich całkowicie).</dd>
 </dl>
 
-<h2>4. Pozycjonowanie i Tła (Zadanie 4)</h2>
+<h2>4. Layout, Pozycjonowanie i Efekty (Zadanie 4)</h2>
 <dl>
-    <dt><code>position: relative</code></dt>
-    <dd>Pozycjonowanie względem siebie samego, ale przede wszystkim tworzy punkt odniesienia dla dzieci z <code>absolute</code>.</dd>
+    <dt><code>position: relative / absolute</code></dt>
+    <dd>Duet do precyzyjnego układania elementów (np. etykieta w rogu zdjęcia).</dd>
 
-    <dt><code>position: absolute</code></dt>
-    <dd>Ustawia element w konkretnym miejscu względem najbliższego rodzica z <code>position: relative</code> (np. przycisk w rogu karty).</dd>
-
-    <dt><code>position: fixed</code></dt>
-    <dd>Przykleja element do okna przeglądarki (np. menu nawigacyjne lub strzałka "w górę"); nie przesuwa się przy scrollowaniu.</dd>
-
-    <dt><code>position: sticky</code></dt>
-    <dd>Element zachowuje się normalnie, aż do momentu przewinięcia do krawędzi ekranu – wtedy się "przykleja".</dd>
-
+    <dt><code>position: fixed / sticky</code></dt>
+    <dd>Elementy przyklejone do okna lub krawędzi podczas przewijania.</dd>
+    
     <dt><code>z-index</code></dt>
-    <dd>Określa kolejność warstw (oś Z). Im wyższa liczba, tym element jest "bliżej" użytkownika (przykrywa inne).</dd>
+    <dd>Zarządzanie warstwami (co przykrywa co).</dd>
 
-    <dt><code>background-size: cover</code></dt>
-    <dd>Skaluje obraz tła tak, aby pokrył cały element, przycinając go w razie potrzeby.</dd>
+    <dt><code>display: flex</code> <span class="new">(DODANE)</span></dt>
+    <dd>Użyliśmy tego w Lightboxie do idealnego wycentrowania obrazka na środku ekranu.</dd>
+
+    <dt><code>background: linear-gradient(...)</code> <span class="new">(DODANE)</span></dt>
+    <dd>Tło jako płynne przejście między kolorami (użyte w tle strony i overlayu).</dd>
+    
+    <dt><code>background-attachment: fixed</code> <span class="new">(DODANE)</span></dt>
+    <dd>Efekt Parallax – tło "stoi" w miejscu podczas przewijania treści.</dd>
+
+    <dt><code>transition</code> <span class="new">(DODANE)</span></dt>
+    <dd>Płynna animacja zmiany stanu (np. powolna zmiana koloru przycisku).</dd>
+
+    <dt><code>transform</code> <span class="new">(DODANE)</span></dt>
+    <dd>Przekształcenia geometryczne (np. <code>scale</code> do powiększenia zdjęcia, <code>translateY</code> do wyśrodkowania).</dd>
+
+    <dt><code>:target</code> <span class="new">(DODANE)</span></dt>
+    <dd>Pseudo-klasa reagująca na ID w adresie URL (serce naszego Lightboxa bez JavaScript).</dd>
 </dl>
 
-<h2>5. Formularze i Interakcja (Zadanie 5)</h2>
+<h2>5. Formularze i Zaawansowane Interakcje (Zadanie 5)</h2>
 <dl>
-    <dt><code>:hover</code></dt>
-    <dd>Styl elementu po najechaniu na niego myszką.</dd>
-
-    <dt><code>:focus</code></dt>
-    <dd>Styl elementu aktywnego (np. pola, w którym piszemy). Ważne, aby nie usuwać <code>outline</code> bez zastępstwa.</dd>
+    <dt><code>:hover / :focus / :active</code></dt>
+    <dd>Stany elementu: najechany, aktywny (pisanie), kliknięty.</dd>
 
     <dt><code>:not(:placeholder-shown)</code></dt>
-    <dd>Zaawansowany selektor sprawdzający, czy pole NIE jest puste (czy użytkownik coś wpisał).</dd>
+    <dd>Sprawdza, czy pole nie jest puste (czy użytkownik coś wpisał).</dd>
+
+    <dt><code>:checked</code> <span class="new">(DODANE)</span></dt>
+    <dd>Wykrywa zaznaczony checkbox/radio. Kluczowe do tworzenia własnego wyglądu przycisków wyboru.</dd>
+
+    <dt><code>:disabled</code> <span class="new">(DODANE)</span></dt>
+    <dd>Stylizacja wyłączonego pola formularza.</dd>
+
+    <dt><code>:valid / :invalid</code> <span class="new">(DODANE)</span></dt>
+    <dd>Walidacja poprawności danych (np. zielona/czerwona ramka).</dd>
 
     <dt><code>::before / ::after</code></dt>
-    <dd>Pseudo-elementy pozwalające wstawić treść dekoracyjną (np. gwiazdkę, ikonę) z poziomu CSS, bez zmian w HTML.</dd>
-
-    <dt><code>cursor: pointer</code></dt>
-    <dd>Zmienia kursor myszy na "łapkę", sugerując, że element jest klikalny (obowiązkowe dla przycisków).</dd>
+    <dd>Pseudo-elementy do wstawiania dekoracji (gwiazdki, ikony, customowe checkboxy).</dd>
+    
+    <dt><code>cursor: pointer / not-allowed</code></dt>
+    <dd>Zmiana wyglądu kursora myszy.</dd>
 </dl>
 
 </body>
