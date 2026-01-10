@@ -1,0 +1,154 @@
+/* =========================================
+   CZĘŚĆ B: Kolory i Ogólne ustawienia (Global)
+   ========================================= */
+
+body {
+    /* B.6: Użycie koloru HSL (Tło: bardzo jasny zielony) */
+    background-color: hsl(120, 60%, 97%);
+    
+    /* B.6: Użycie koloru HEX (Tekst główny: ciemny szary dla kontrastu) */
+    color: #333333;
+
+    /* A.2: Google Fonts dla tekstu głównego (Lato) */
+    /* A.3: Font stack z fallback fonts (sans-serif) */
+    font-family: 'Lato', Helvetica, Arial, sans-serif;
+
+    /* C.12: Line-height dla czytelności (1.6) */
+    line-height: 1.6;
+
+    /* Wycentrowanie strony dla estetyki */
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =========================================
+   CZĘŚĆ A: Typografia Nagłówków
+   ========================================= */
+
+h1, h2, h3 {
+    /* A.1: Google Fonts dla nagłówków (Merriweather) */
+    /* A.3: Fallback jako serif */
+    font-family: 'Merriweather', Georgia, serif;
+    
+    /* B.7: Spójna paleta - Ciemna zieleń dla nagłówków */
+    color: #2e7d32; 
+}
+
+h1 {
+    /* A.4: Font-weight (Bardzo gruby) */
+    font-weight: 900;
+    
+    /* C.9: Text-align (Center) */
+    text-align: center;
+    
+    /* C.11: Text-transform (Uppercase - same wielkie litery) */
+    text-transform: uppercase;
+    
+    /* C.13: Letter-spacing i Word-spacing */
+    letter-spacing: 2px;
+    word-spacing: 5px;
+    
+    /* C.14: Text-shadow (Cień tekstu) */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    
+    margin-bottom: 40px;
+}
+
+h2 {
+    /* A.4: Font-weight (Pogrubiony) */
+    font-weight: 700;
+    
+    /* C.11: Text-transform (Capitalize - pierwsze litery wielkie) */
+    text-transform: capitalize;
+    
+    border-bottom: 2px solid #a5d6a7;
+    padding-bottom: 10px;
+}
+
+h3 {
+    /* A.4: Font-weight (Lżejszy) */
+    font-weight: 300;
+    
+    /* A.5: Font-variant: small-caps (Kapitaliki) */
+    font-variant: small-caps;
+    
+    font-size: 1.4rem;
+    color: #1b5e20;
+}
+
+/* =========================================
+   CZĘŚĆ C: Właściwości tekstu i detale
+   ========================================= */
+
+/* C.15: Text-indent dla pierwszego paragrafu po nagłówku */
+h2 + p, h3 + p {
+    text-indent: 30px;
+}
+
+/* C.9: Text-align justify (dla długich tekstów) */
+.justified-text {
+    text-align: justify;
+}
+
+/* C.10: Stylizacja linków */
+a {
+    /* B.6: Użycie RGB (Kolor linków) */
+    color: rgb(0, 102, 204);
+    text-decoration: none; /* Usunięcie podkreślenia */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: rgb(0, 51, 102);
+    text-decoration: underline; /* Podkreślenie po najechaniu */
+}
+
+/* Stylizacja cytatu i autora */
+blockquote {
+    /* B.8: Przezroczystość tła (RGBA) */
+    background-color: rgba(255, 255, 255, 0.6);
+    border-left: 5px solid #2e7d32;
+    margin: 30px 0;
+    padding: 20px;
+    font-style: italic;
+    
+    /* Estetyka */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.quote-author {
+    /* C.9: Text-align right (Wyrównanie autora do prawej) */
+    text-align: right;
+    font-weight: bold;
+    font-style: normal;
+    margin-top: 10px;
+}
+
+/* Sekcja naukowa */
+.science-box {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px dashed #2e7d32;
+    border-radius: 8px;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+/* Inne elementy */
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(46, 125, 50, 0.75), rgba(0, 0, 0, 0));
+    margin: 40px 0;
+}
+
+mark {
+    background-color: #ffecb3; /* Pastelowy żółty */
+    color: #444;
+}

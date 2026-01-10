@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 3: Box Model</title>
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Box Model i Listy w Praktyce</h1>
+
+        <section class="list-section">
+            <h2>1. Zalety języka HTML (Unordered)</h2>
+            <ul class="styled-ul">
+                <li>Prosty do nauczenia się i użycia</li>
+                <li>Szeroko wspierany przez wszystkie przeglądarki</li>
+                <li>Umożliwia tworzenie struktury stron internetowych</li>
+                <li>Możliwość łatwej integracji z CSS i JavaScript</li>
+                <li>Standardowy język dla internetu</li>
+            </ul>
+        </section>
+
+        <section class="list-section">
+            <h2>2. Kroki tworzenia strony (Ordered)</h2>
+            <ol class="styled-ol">
+                <li>Planowanie treści i struktury strony</li>
+                <li>Projektowanie wyglądu strony</li>
+                <li>Tworzenie kodu HTML i CSS</li>
+                <li>Testowanie strony w różnych przeglądarkach</li>
+                <li>Publikacja strony w internecie</li>
+            </ol>
+        </section>
+
+        <section class="list-section">
+            <h2>3. Słownik pojęć (Definition List)</h2>
+            <dl class="styled-dl">
+                <dt>DOCTYPE</dt>
+                <dd>Instrukcja określająca wersję i typ dokumentu HTML</dd>
+
+                <dt>Tag</dt>
+                <dd>Pojedynczy element kodu HTML otoczony nawiasami ostrymi.</dd>
+
+                <dt>Atrybut</dt>
+                <dd>Informacja dodatkowa w tagu, która modyfikuje jego działanie.</dd>
+
+                <dt>Element</dt>
+                <dd>Całość znacznika HTML wraz z zawartością i atrybutami.</dd>
+            </dl>
+        </section>
+
+        <hr>
+
+        <section class="table-section">
+            <h2>4. Porównanie technologii Frontend</h2>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Technologia</th>
+                        <th>Rola</th>
+                        <th>Trudność</th>
+                        <th>Wsparcie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HTML5</td>
+                        <td>Struktura</td>
+                        <td>Niska</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>CSS3</td>
+                        <td>Wygląd</td>
+                        <td>Średnia</td>
+                        <td>99%</td>
+                    </tr>
+                    <tr>
+                        <td>JavaScript</td>
+                        <td>Interakcja</td>
+                        <td>Wysoka</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>React</td>
+                        <td>Framework</td>
+                        <td>Wysoka</td>
+                        <td>Wymaga JS</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section class="box-model-demo">
+            <h2>5. Demonstracja Box Model</h2>
+            <p>Oba pudełka mają w CSS: <code>width: 300px</code>, <code>padding: 20px</code>, <code>border: 10px</code>.</p>
+            
+            <div class="demo-wrapper">
+                <div class="box content-box">
+                    <h3>content-box</h3>
+                    <p>Szerokość to tylko treść.</p>
+                    <p><strong>Rzeczywista szerokość:</strong><br>
+                    300 + 40 (pad) + 20 (border) = <strong>360px</strong></p>
+                </div>
+
+                <div class="box border-box">
+                    <h3>border-box</h3>
+                    <p>Szerokość zawiera wszystko.</p>
+                    <p><strong>Rzeczywista szerokość:</strong><br>
+                    Jest równa dokładnie <strong>300px</strong> (treść się kurczy).</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
