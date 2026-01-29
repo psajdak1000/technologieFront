@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadanie 5: Formularz Kontaktowy</title>
+    <link rel="stylesheet" href="style5.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Formularz Kontaktowy</h1>
+
+        <form id="contactForm" novalidate>
+            
+            <fieldset>
+                <legend>Twoje Dane</legend>
+
+                <div class="form-group">
+                    <label for="username" class="required">Imię i nazwisko:</label>
+                    <input type="text" id="username" name="username" placeholder="Jan Kowalski">
+                    <div class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="required">Adres Email:</label>
+                    <input type="email" id="email" name="email" placeholder="jan@example.com">
+                    <div class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Telefon (Opcjonalny, 9 cyfr):</label>
+                    <input type="tel" id="phone" name="phone" placeholder="123456789">
+                    <div class="error-text"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Treść Wiadomości</legend>
+
+                <div class="form-group">
+                    <label for="topic" class="required">Temat:</label>
+                    <select id="topic" name="topic">
+                        <option value="">-- Wybierz temat --</option>
+                        <option value="wspolpraca">Współpraca</option>
+                        <option value="pytanie">Pytanie techniczne</option>
+                        <option value="blad">Zgłoszenie błędu</option>
+                    </select>
+                    <div class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <p class="label-text">Preferowana forma kontaktu:</p>
+                    <div class="custom-controls">
+                        <input type="radio" id="contact_email" name="contactMethod" value="email" class="custom-radio" checked>
+                        <label for="contact_email">Email</label>
+
+                        <input type="radio" id="contact_phone" name="contactMethod" value="telefon" class="custom-radio">
+                        <label for="contact_phone">Telefon</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="required">Wiadomość (min. 10 znaków):</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Wpisz treść wiadomości..."></textarea>
+                    <div class="error-text"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Zgody</legend>
+                <div class="form-group">
+                    <input type="checkbox" id="consent" name="consent" class="custom-checkbox">
+                    <label for="consent" class="required">Akceptuję regulamin i wyrażam zgodę na przetwarzanie danych.</label>
+                    <div class="error-text"></div>
+                </div>
+            </fieldset>
+
+            <div class="form-actions">
+                <button type="submit" id="submitBtn" class="btn btn-primary">Wyślij wiadomość</button>
+            </div>
+
+            <div id="successMessage" style="display:none; margin-top: 20px; padding: 15px; background: #d4edda; color: #155724; text-align: center; border-radius: 5px;">
+                Wiadomość została wysłana pomyślnie!
+            </div>
+
+        </form>
+    </div>
+
+    <script src="script5.js"></script>
+
+</body>
+</html>
