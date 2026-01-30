@@ -1,0 +1,12 @@
+/* src/components/Header.css */
+.header-container {
+  background-color: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+}
+
+.date-text {
+  color: #666;
+  font-size: 0.9rem;
+}

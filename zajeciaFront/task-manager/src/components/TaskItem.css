@@ -1,0 +1,41 @@
+/* src/components/TaskItem.css */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Kolory dla priorytetów */
+.high { border-left: 5px solid red; }
+.medium { border-left: 5px solid orange; }
+.low { border-left: 5px solid green; }
+
+.badge {
+  font-size: 0.8em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  margin-left: auto; /* Pcha badge i przycisk na prawo */
+}
+
+
+
+/* Nowy styl dla Badge'a Kategorii */
+.task-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.category-badge {
+  font-size: 10px;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

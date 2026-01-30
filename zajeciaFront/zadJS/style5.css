@@ -314,6 +314,7 @@ label.required::before {
 
 input[type="range"] {
     -webkit-appearance: none; /* Wyłącza domyślny styl przeglądarki */
+    appearance: none; /* Właściwość standardowa */
     width: 100%;
     background: transparent;
     margin: 10px 0;
