@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { useTasks } from '../context/TasksContext'; // Import hooka
 
-function TaskForm({ addTask }) {
+function TaskForm() {
+  const { addTask } = useTasks(); // Pobieramy funkcję z Contextu
+  
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('medium');
-  const [category, setCategory] = useState('Praca'); // Nowy stan dla kategorii
+  const [category, setCategory] = useState('Praca');
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (title.trim().length < 3) {
       setError('Tytuł musi mieć minimum 3 znaki');
       return;
@@ -18,14 +20,14 @@ function TaskForm({ addTask }) {
       id: crypto.randomUUID(),
       title: title.trim(),
       priority,
-      category, // Dodajemy kategorię do obiektu zadania
+      category,
       completed: false
     };
 
-    addTask(newTask);
+    addTask(newTask); // Używamy funkcji z Contextu
     setTitle('');
     setPriority('medium');
-    setCategory('Praca'); // Resetujemy kategorię
+    setCategory('Praca');
     setError('');
   };
 
@@ -46,14 +48,12 @@ function TaskForm({ addTask }) {
       </div>
 
       <div className="form-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-        {/* Wybór Priorytetu */}
         <select value={priority} onChange={(e) => setPriority(e.target.value)} style={{ flex: 1 }}>
           <option value="low">Niski</option>
           <option value="medium">Średni</option>
           <option value="high">Wysoki</option>
         </select>
 
-        {/* Wybór Kategorii (Część A - pkt 16) */}
         <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ flex: 1 }}>
           <option value="Praca">Praca</option>
           <option value="Dom">Dom</option>

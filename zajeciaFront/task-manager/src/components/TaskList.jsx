@@ -1,30 +1,31 @@
 import TaskItem from './TaskItem';
+import { useTasks } from '../context/TasksContext';
+import { useFilters } from '../context/FilterContext';
 
-// Komponent przyjmuje tablicę zadań oraz funkcje sterujące, w tym nową funkcję onUpdate 
-function TaskList({ tasks, onToggle, onDelete, onChangePriority, onUpdate }) {
+function TaskList() {
+  // Pobieramy gotową, przefiltrowaną listę
+  const { filteredTasks, searchQuery } = useFilters();
   
-  // Część B: Obsługa pustej listy - wyświetlamy komunikat, gdy nie ma żadnych zadań 
-  if (tasks.length === 0) {
-    return <p>Brak zadań do wykonania! 🎉</p>;
+  // Pobieramy akcje do obsługi zadań
+  const { toggleTask, deleteTask, changePriority, updateTask } = useTasks();
+
+  if (filteredTasks.length === 0) {
+    if (searchQuery) {
+      return <p style={{textAlign: 'center', color: '#666'}}>Nie znaleziono zadań dla frazy «{searchQuery}»</p>;
+    }
+    return <p style={{textAlign: 'center'}}>Brak zadań na liście!</p>;
   }
 
   return (
-    // Kontener <ul> służący do grupowania elementów TaskItem 
-    <ul style={{ listStyle: 'none', padding: 0 }}>
-      {/* Część B: Mapowanie tablicy tasks na poszczególne komponenty TaskItem  */}
-      {tasks.map((task) => (
+    <ul className="task-list">
+      {filteredTasks.map(task => (
         <TaskItem 
-          key={task.id}           // Klucz musi być unikalny, używamy ID zamiast indeksu 
-          id={task.id}            // Przekazujemy ID do identyfikacji zadania 
-          title={task.title}      // Przekazujemy tytuł zadania 
-          priority={task.priority} // Przekazujemy priorytet (np. low, medium, high) 
-          completed={task.completed} // Przekazujemy status ukończenia 
-          
-          // Przekazywanie funkcji obsługi zdarzeń w dół do komponentu potomnego 
-          onToggle={onToggle}
-          onDelete={onDelete}
-          onChangePriority={onChangePriority}
-          onUpdate={onUpdate}     // Przekazujemy nową funkcję aktualizacji tytułu 
+          key={task.id} 
+          {...task} // Przekazujemy wszystkie pola zadania (id, title, priority...)
+          onToggle={toggleTask}
+          onDelete={deleteTask}
+          onChangePriority={changePriority}
+          onUpdate={updateTask}
         />
       ))}
     </ul>

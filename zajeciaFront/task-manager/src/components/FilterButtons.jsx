@@ -1,19 +1,31 @@
-// src/components/FilterButtons.jsx
-function FilterButtons({ currentFilter, setFilter }) {
-  const filters = ['all', 'active', 'completed'];
+import { useFilters } from '../context/FilterContext';
+
+function FilterButtons() {
+  // Pobieramy stan i setter z Contextu
+  const { filterStatus, setFilterStatus } = useFilters();
 
   return (
     <div className="filter-buttons">
-      {filters.map(f => (
-        <button 
-          key={f}
-          className={currentFilter === f ? 'active-filter' : ''} // Wizualne wyróżnienie 
-          onClick={() => setFilter(f)}
-        >
-          {f.charAt(0).toUpperCase() + f.slice(1)}
-        </button>
-      ))}
+      <button 
+        className={filterStatus === 'all' ? 'active' : ''} 
+        onClick={() => setFilterStatus('all')}
+      >
+        Wszystkie
+      </button>
+      <button 
+        className={filterStatus === 'active' ? 'active' : ''} 
+        onClick={() => setFilterStatus('active')}
+      >
+        Aktywne
+      </button>
+      <button 
+        className={filterStatus === 'completed' ? 'active' : ''} 
+        onClick={() => setFilterStatus('completed')}
+      >
+        Ukończone
+      </button>
     </div>
   );
 }
+
 export default FilterButtons;

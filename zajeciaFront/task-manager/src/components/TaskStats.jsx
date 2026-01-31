@@ -1,14 +1,20 @@
-function TaskStats({ tasks }) {
+import { useTasks } from '../context/TasksContext';
+
+function TaskStats() {
+  const { tasks } = useTasks(); // Pobieramy zadania bezpośrednio
+
   const total = tasks.length;
   const completed = tasks.filter(t => t.completed).length;
-  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+  const remaining = total - completed;
+  const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   return (
-    <div className="task-stats" style={{ textAlign: 'center', marginBottom: '20px' }}>
-      <span>Razem: {total} | </span>
-      <span>Ukończone: {completed} | </span>
-      <span>Postęp: {percentage}%</span>
+    <div className="stats-container">
+      <div className="stat-item">Razem: <strong>{total}</strong></div>
+      <div className="stat-item">Ukończone: <strong>{completed}</strong></div>
+      <div className="stat-item">Postęp: <strong>{progress}%</strong></div>
     </div>
   );
 }
+
 export default TaskStats;
