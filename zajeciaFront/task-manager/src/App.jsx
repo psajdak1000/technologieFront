@@ -10,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Importujemy Providery (Konteksty)
 import { TasksProvider } from './context/TasksContext';
 import { FilterProvider } from './context/FilterContext';
-import { ThemeProvider } from './context/ThemeContext'; // <--- Nowość (Dark Mode)
+import { ThemeProvider } from './context/ThemeContext'; //  (Dark Mode)
 
 import './App.css';
 

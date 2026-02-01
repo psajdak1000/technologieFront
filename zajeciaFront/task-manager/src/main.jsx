@@ -11,7 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>  {/* Upewnij się, że BrowserRouter otacza wszystko */}
-      <AuthProvider> {/* <--- Dodaj AuthProvider */}
+      <AuthProvider> {/*  Dodaj AuthProvider */}
         <TasksProvider>
           <FilterProvider>
             <App />
