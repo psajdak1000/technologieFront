@@ -1,93 +1,49 @@
-import Header from './components/Header';
-import QuoteOfTheDay from './components/QuoteOfTheDay';
-import TaskForm from './components/TaskForm';
-import TaskList from './components/TaskList';
-import FilterButtons from './components/FilterButtons';
-import TaskStats from './components/TaskStats';
-import Card from './components/Card';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import TasksPage from './pages/TasksPage';
+import SettingsPage from './pages/SettingsPage';
+import NotFound from './pages/NotFound';
+import TaskDetailsPage from './pages/TaskDetailsPage';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
-// TERAZ: Importujemy dane z naszych nowych Contextów
-import { useTasks } from './context/TasksContext';
-import { useFilters } from './context/FilterContext';
+// Hooki już tu nie są potrzebne, są w TasksPage!
+// App służy teraz tylko do definicji tras (Routing)
 
 function App() {
-  // Pobieramy globalne stany z Contextu (zamiast trzymać je tutaj w useState)
-  const { isLoading, isSaving, clearAllTasks, tasks } = useTasks();
-  
-  // Pobieramy stany filtrów i sortowania z drugiego Contextu
-  const { 
-    searchQuery, setSearchQuery, 
-    filterCategory, setFilterCategory, 
-    sortType, setSortType 
-  } = useFilters();
-
   return (
-    <div className="app">
-      <header>
-        <Header />
-        <QuoteOfTheDay />
-      </header>
-
-      <main>
-        {/* Komponenty same sobie pobiorą dane, nie musimy ich przekazywać! */}
-        <TaskStats /> 
+    <Routes>
+      {/* Layout jest rodzicem dla wszystkich podstron */}
+      <Route path="/" element={<Layout />}>
         
-        <Card title="Menedżer Zadań">
-          <TaskForm /> 
-          
-          {/* PANEL KONTROLNY: Filtry i Sortowanie sterowane przez Context */}
-          <div className="controls-panel" style={{ margin: '20px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            
-            <input 
-              type="text" 
-              placeholder="🔍 Szukaj zadania..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-            />
+        {/* Ścieżka główna: Wyświetla TasksPage */}
+        <Route index element={<TasksPage />} />
+        
+        {/* Ścieżka /tasks również wyświetla TasksPage */}
+        <Route path="tasks" element={<TasksPage />} />
 
-            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              <select 
-                value={filterCategory} 
-                onChange={(e) => setFilterCategory(e.target.value)}
-                style={{ padding: '5px', flex: 1 }}
-              >
-                <option value="all">Wszystkie kategorie</option>
-                <option value="Praca">Praca</option>
-                <option value="Dom">Dom</option>
-                <option value="Zakupy">Zakupy</option>
-                <option value="Inne">Inne</option>
-              </select>
-
-              <select 
-                value={sortType} 
-                onChange={(e) => setSortType(e.target.value)}
-                style={{ padding: '5px', flex: 1 }}
-              >
-                <option value="default">Sortuj: Domyślnie</option>
-                <option value="priority">Sortuj: Priorytet</option>
-                <option value="alpha">Sortuj: A-Z</option>
-              </select>
-            </div>
-          </div>
-
-          <FilterButtons />
-
-          {isSaving && <p style={{ color: 'gray', fontSize: '12px', textAlign: 'center' }}>Zapisywanie zmian...</p>}
-
-          {isLoading ? (
-            <div className="skeleton">Pobieranie danych z API...</div>
-          ) : (
-            <TaskList /> /* Pusta lista propsów! */
-          )}
-
-          {tasks.length > 0 && (
-            <button onClick={clearAllTasks} className="clear-all-btn">Wyczyść wszystko</button>
-          )}
-        </Card>
-      </main>
-    </div>
+        {/* NOWA TRASA: Dwukropek oznacza parametr dynamiczny (np. ID zadania) */}
+        <Route path="tasks/:taskId" element={<TaskDetailsPage />} />
+        
+        {/* TRASA PUBLICZNA: Strona logowania */}
+        <Route path="login" element={<LoginPage />} />
+        
+        {/* TRASA CHRONIONA: Dostępna tylko dla zalogowanych użytkowników */}
+        <Route 
+          path="settings" 
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Obsługa 404 - każda inna ścieżka */}
+        <Route path="*" element={<NotFound />} />
+        
+      </Route>
+    </Routes>
   );
 }
 

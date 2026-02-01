@@ -1,0 +1,36 @@
+.main-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 15px 0;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.main-nav a:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Klasa dodawana automatycznie przez React Router */
+.main-nav a.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.breadcrumbs {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 0.9em;
+}

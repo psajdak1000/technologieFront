@@ -1,60 +1,65 @@
-import { useState } from 'react';
-import { useTasks } from '../context/TasksContext'; // Import hooka
+import { useTasks } from '../context/TasksContext';
+import { useForm } from '../hooks/useForm';
 
 function TaskForm() {
-  const { addTask } = useTasks(); // Pobieramy funkcję z Contextu
-  
-  const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState('medium');
-  const [category, setCategory] = useState('Praca');
-  const [error, setError] = useState('');
+  const { addTask } = useTasks();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (title.trim().length < 3) {
-      setError('Tytuł musi mieć minimum 3 znaki');
-      return;
+  // Definicja walidacji
+  const validate = (values) => {
+    let errors = {};
+    if (!values.title || values.title.trim().length < 3) {
+      errors.title = 'Tytuł musi mieć minimum 3 znaki';
     }
+    return errors;
+  };
 
+  // Definicja wysyłki
+  const submitTask = (values) => {
     const newTask = {
       id: crypto.randomUUID(),
-      title: title.trim(),
-      priority,
-      category,
+      title: values.title.trim(),
+      priority: values.priority,
+      category: values.category,
       completed: false
     };
-
-    addTask(newTask); // Używamy funkcji z Contextu
-    setTitle('');
-    setPriority('medium');
-    setCategory('Praca');
-    setError('');
+    addTask(newTask);
   };
+
+  // Użycie naszego Custom Hooka!
+  const { values, errors, handleChange, handleBlur, handleSubmit } = useForm(
+    { title: '', priority: 'medium', category: 'Praca' }, // Stan początkowy
+    validate,
+    submitTask
+  );
 
   return (
     <form onSubmit={handleSubmit} className="task-form">
       <div className="form-group">
         <input 
           type="text"
+          name="title" // Ważne: name musi pasować do klucza w values
           placeholder="Co masz do zrobienia?"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className={error ? 'input-error' : ''}
+          value={values.title}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={errors.title ? 'input-error' : ''}
+          // useRef dla autofocusa dodamy w Zadaniu 6
+          id="task-input" 
         />
         <div className="form-info">
-          <small>{title.length}/100 znaków</small>
-          {error && <span className="error-text" style={{color: 'red', display: 'block'}}>{error}</span>}
+          <small>{values.title.length}/100 znaków</small>
+          {errors.title && <span className="error-text" style={{color: 'red', display: 'block'}}>{errors.title}</span>}
         </div>
       </div>
 
       <div className="form-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-        <select value={priority} onChange={(e) => setPriority(e.target.value)} style={{ flex: 1 }}>
+        <select name="priority" value={values.priority} onChange={handleChange} style={{ flex: 1 }}>
           <option value="low">Niski</option>
           <option value="medium">Średni</option>
           <option value="high">Wysoki</option>
         </select>
 
-        <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ flex: 1 }}>
+        <select name="category" value={values.category} onChange={handleChange} style={{ flex: 1 }}>
           <option value="Praca">Praca</option>
           <option value="Dom">Dom</option>
           <option value="Zakupy">Zakupy</option>
@@ -62,7 +67,7 @@ function TaskForm() {
         </select>
       </div>
 
-      <button type="submit" disabled={title.trim().length < 3}>
+      <button type="submit" disabled={values.title.length < 3}>
         Dodaj zadanie
       </button>
     </form>

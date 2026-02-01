@@ -1,88 +1,117 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import { tasksApi } from '../api/tasksApi';
+import { tasksReducer, initialState } from '../reducers/tasksReducer';
+import { 
+  setLoading, 
+  tasksLoaded, 
+  setError, 
+  addTaskAction, 
+  deleteTaskAction, 
+  toggleTaskAction, 
+  updateTaskAction, 
+  changePriorityAction, 
+  clearAllAction,
+  clearCompletedAction, 
+  toggleAllAction       
+} from '../actions/taskActions';
 
-// 1. Tworzymy Kontekst
+
+
 const TasksContext = createContext(null);
 
-// 2. Tworzymy Provider (Dostawcę danych)
 export const TasksProvider = ({ children }) => {
-  // --- STAN (Przeniesiony z App.jsx) ---
-  const [tasks, setTasks] = useState(() => {
+  // 1. Inicjalizacja reducera z "Lazy Initialization" (wczytanie localStorage na start)
+  const [state, dispatch] = useReducer(tasksReducer, initialState, (defaultState) => {
     const saved = localStorage.getItem('myTasks');
-    return saved ? JSON.parse(saved) : [];
+    return saved 
+      ? { ...defaultState, tasks: JSON.parse(saved) } 
+      : defaultState;
   });
-  
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
-  // --- EFEKTY (Przeniesione z App.jsx) ---
-  
-  // Pobieranie danych z API
+  // 2. Efekt: Pobieranie danych z API (jeśli lista pusta)
   useEffect(() => {
     const controller = new AbortController();
-    
-    // Pobieramy tylko gdy localStorage jest pusty (symulacja pierwszego wejścia)
-    if (tasks.length === 0) {
-      setIsLoading(true);
+
+    if (state.tasks.length === 0) {
+      dispatch(setLoading(true)); // Używamy Action Creator
+
       tasksApi.fetchTasks(controller.signal)
         .then(data => {
+          // Mapujemy dane z API (dodajemy brakujące pola)
           const apiTasks = data.map(t => ({
-            id: t.id, 
-            title: t.title, 
-            completed: t.completed, 
+            id: t.id,
+            title: t.title,
+            completed: t.completed,
             priority: 'medium',
-            category: 'Inne' // Domyślna kategoria dla danych z API
+            category: 'Inne'
           }));
-          setTasks(apiTasks);
+          
+          dispatch(tasksLoaded(apiTasks)); // Wysyłamy akcję TASKS_LOADED
         })
         .catch(err => {
-          if (err.name !== 'AbortError') console.error("Błąd API:", err);
-        })
-        .finally(() => setIsLoading(false));
+          if (err.name !== 'AbortError') {
+            dispatch(setError('Nie udało się pobrać danych z serwera'));
+            console.error(err);
+          }
+        });
     }
 
-    return () => controller.abort(); 
-  }, []);
+    return () => controller.abort();
+  }, []); // Pusta tablica zależności - tylko przy montowaniu
 
-  // Zapisywanie do localStorage i symulacja API
+  // 3. Efekt: Zapisywanie do localStorage i symulacja API przy każdej zmianie tasks
   useEffect(() => {
-    localStorage.setItem('myTasks', JSON.stringify(tasks));
+    localStorage.setItem('myTasks', JSON.stringify(state.tasks));
     
-    if (tasks.length > 0) {
-      setIsSaving(true);
-      tasksApi.saveTasks(tasks).finally(() => setIsSaving(false));
+    // Opcjonalnie: symulacja zapisu do API (bez wpływu na Reducer, to tylko efekt uboczny)
+    if (state.tasks.length > 0) {
+      tasksApi.saveTasks(state.tasks).catch(err => console.error(err));
     }
-  }, [tasks]);
+  }, [state.tasks]);
 
-  // --- AKCJE (Funkcje modyfikujące stan) ---
 
-  const addTask = (newTask) => setTasks((prev) => [...prev, newTask]);
+  // 4. Funkcje pomocnicze (Wrapper Functions)
+  // Komponenty nie muszą wiedzieć o "dispatch", po prostu wywołują funkcje jak dawniej
   
-  const updateTask = (id, title) => setTasks((prev) => prev.map(t => t.id === id ? {...t, title} : t));
+  const addTask = (task) => dispatch(addTaskAction(task));
   
-  const deleteTask = (id) => setTasks((prev) => prev.filter(t => t.id !== id));
+  const deleteTask = (id) => dispatch(deleteTaskAction(id));
   
-  const toggleTask = (id) => setTasks((prev) => prev.map(t => t.id === id ? {...t, completed: !t.completed} : t));
+  const toggleTask = (id) => dispatch(toggleTaskAction(id));
   
-  const changePriority = (id, priority) => setTasks((prev) => prev.map(t => t.id === id ? {...t, priority} : t));
+  const updateTask = (id, title) => dispatch(updateTaskAction(id, title));
+  
+  const changePriority = (id, priority) => dispatch(changePriorityAction(id, priority));
+
+  const clearCompleted = () => {
+  // Usuwamy bez pytania, albo z pytaniem - jak wolisz
+  dispatch(clearCompletedAction());
+};
+
+const toggleAll = () => {
+  dispatch(toggleAllAction());
+};
 
   const clearAllTasks = () => {
     if (window.confirm("Czy na pewno chcesz usunąć wszystkie zadania?")) {
-      setTasks([]);
+      dispatch(clearAllAction());
     }
   };
 
-  // Wartości, które udostępniamy całemu drzewu aplikacji
+  // 5. Wartości udostępniane w Context
   const value = {
-    tasks,
-    isLoading,
-    isSaving,
+    tasks: state.tasks,      // Pobieramy ze stanu reducera
+    isLoading: state.isLoading,
+    error: state.error,      // Nowość: obsługa błędów
+    lastUpdated: state.lastUpdated, // Nowość: timestamp
     addTask,
-    updateTask,
     deleteTask,
     toggleTask,
+    updateTask,
     changePriority,
-    clearAllTasks
+    clearAllTasks,
+    clearCompleted, 
+    toggleAll       
   };
 
   return (
@@ -92,7 +121,6 @@ export const TasksProvider = ({ children }) => {
   );
 };
 
-// 3. Custom Hook z walidacją 
 export const useTasks = () => {
   const context = useContext(TasksContext);
   if (!context) {
