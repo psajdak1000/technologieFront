@@ -1,16 +1,26 @@
 // src/components/Header.jsx
-import './Header.css'; // Importujesz plik CSS, aby style działały 
+import { memo } from 'react'; // <--- 1. Importujemy memo 
+import { FaTasks } from 'react-icons/fa'; // Import ikony (wymaga npm install react-icons)
+import './Header.css'; 
 
 function Header() {
-  // Przykład użycia logiki JS wewnątrz komponentu
-  const currentData = new Date().toLocaleDateString();
+  // Log diagnostyczny - pokaże się w konsoli tylko raz, 
+  // nawet jak będziesz pisał w wyszukiwarce!
+  console.log('Render: Header'); 
+
+  // Usunęliśmy datę, żeby komponent był w pełni statyczny
+  // (Header zazwyczaj nie musi się zmieniać co chwilę)
 
   return (
-    <header className="header-container"> {/* Używamy className zamiast class  */}
-      <h1>📝 Menedżer Zadań</h1> {/* Ikona/emoji i tytuł zgodnie z poleceniem  */}
-      <p className="date-text">Dzisiaj jest: {currentData}</p> {/* JS w nawiasach klamrowych  */}
+    <header className="header-container">
+      <h1 className="logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+        <FaTasks className="icon" />
+        Menedżer Zadań
+      </h1>
+      <p className="subtitle">Zorganizuj swój dzień efektywnie</p>
     </header>
   );
 }
 
-export default Header; // Eksportujesz, żeby App.jsx mógł go użyć 
+// 2. KLUCZOWY MOMENT: Owijamy komponent w memo przy exporcie 
+export default memo(Header);

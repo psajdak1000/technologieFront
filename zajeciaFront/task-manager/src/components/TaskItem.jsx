@@ -1,12 +1,25 @@
-import { useState } from 'react';
-import { useToggle } from '../hooks/useToggle';
+import { useState, useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
+import AutoResizeTextarea from './AutoResizeTextarea';
 import './TaskItem.css';
 
-function TaskItem({ id, title, completed, priority, category, onToggle, onDelete, onChangePriority, onUpdate }) {
+// 1. NOWOŚĆ: Dodajemy dueDate do listy propsów
+function TaskItem({ id, title, completed, priority, category, dueDate, onToggle, onDelete, onChangePriority, onUpdate }) {
   
-  const [isEditing, toggleEdit] = useToggle(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
+  
+  const textareaRef = useRef(null);
+
+  const toggleEdit = () => {
+    setIsEditing(prev => !prev);
+  };
+
+  useEffect(() => {
+    if (isEditing) {
+      textareaRef.current?.focus();
+    }
+  }, [isEditing]);
 
   const getCategoryColor = (cat) => {
     switch(cat) {
@@ -25,7 +38,10 @@ function TaskItem({ id, title, completed, priority, category, onToggle, onDelete
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleSave();
+    if (e.key === 'Enter') {
+      e.preventDefault(); 
+      handleSave();
+    }
     else if (e.key === 'Escape') {
       setEditTitle(title);
       toggleEdit();
@@ -34,7 +50,8 @@ function TaskItem({ id, title, completed, priority, category, onToggle, onDelete
 
   const styles = {
     textDecoration: completed ? "line-through" : "none",
-    color: completed ? "gray" : "black"
+    // 2. NOWOŚĆ: Używamy zmiennej zamiast 'black', żeby działało w Dark Mode
+    color: completed ? "gray" : "var(--text-primary)" 
   };
 
   return (
@@ -47,29 +64,41 @@ function TaskItem({ id, title, completed, priority, category, onToggle, onDelete
           className="checkbox-round"
         />
         
-        <div className="task-content">
+        <div className="task-content" style={{ width: '100%' }}>
           {isEditing ? (
-            <input 
-              type="text"
+            <AutoResizeTextarea
+              ref={textareaRef}
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)} 
               onKeyDown={handleKeyDown} 
-              autoFocus 
               className="edit-input"
             />
           ) : (
             <div className="task-header">
-              {/* ZMIANA TUTAJ: Link ma 'textDecoration: none', żeby nie był podkreślony jak hiperłącze */}
               <Link 
                 to={`/tasks/${id}`} 
                 style={{ textDecoration: 'none', color: 'inherit' }} 
                 className="task-title"
               >
-                 {/* ...styles (przekreślenie) jest teraz na span, więc działa poprawnie */}
                  <span style={{ ...styles, cursor: 'pointer', fontWeight: 'bold' }}>
                    {title}
                  </span>
               </Link>
+
+              {/* 3. NOWOŚĆ: Wyświetlanie daty (jeśli istnieje) */}
+              {dueDate && (
+                <span style={{ 
+                  fontSize: '0.8rem', 
+                  color: 'var(--text-secondary)', 
+                  marginLeft: '10px',
+                  border: '1px solid var(--border-color)',
+                  padding: '2px 6px',
+                  borderRadius: '12px',
+                  whiteSpace: 'nowrap'
+                }}>
+                  📅 {dueDate}
+                </span>
+              )}
 
               <span className="category-badge" style={{ backgroundColor: getCategoryColor(category) }}>
                 {category || 'Inne'}
@@ -103,4 +132,4 @@ function TaskItem({ id, title, completed, priority, category, onToggle, onDelete
   );
 }
 
-export default TaskItem;
+export default memo(TaskItem);

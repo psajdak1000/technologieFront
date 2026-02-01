@@ -1,10 +1,14 @@
+import { useEffect, useRef } from 'react';
 import { useTasks } from '../context/TasksContext';
 import { useForm } from '../hooks/useForm';
 
 function TaskForm() {
   const { addTask } = useTasks();
+  
+  // Ref do inputa
+  const inputRef = useRef(null);
 
-  // Definicja walidacji
+  // Walidacja
   const validate = (values) => {
     let errors = {};
     if (!values.title || values.title.trim().length < 3) {
@@ -13,38 +17,59 @@ function TaskForm() {
     return errors;
   };
 
-  // Definicja wysyłki
+  // Wysyłka
   const submitTask = (values) => {
     const newTask = {
       id: crypto.randomUUID(),
       title: values.title.trim(),
       priority: values.priority,
       category: values.category,
+      dueDate: values.dueDate, // <--- 1. NOWOŚĆ: Zapisujemy datę
       completed: false
     };
+    
     addTask(newTask);
+
+    // Przywracamy focus
+    inputRef.current?.focus();
   };
 
-  // Użycie naszego Custom Hooka!
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm(
-    { title: '', priority: 'medium', category: 'Praca' }, // Stan początkowy
+    // 2. NOWOŚĆ: Dodajemy dueDate do stanu początkowego
+    { title: '', priority: 'medium', category: 'Praca', dueDate: '' },
     validate,
     submitTask
   );
+
+  // Obsługa Auto-focus i skrótu Alt+N
+  useEffect(() => {
+    inputRef.current?.focus();
+
+    const handleKeyDown = (e) => {
+      if (e.altKey && e.key === 'n') {
+        e.preventDefault(); 
+        inputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="task-form">
       <div className="form-group">
         <input 
+          ref={inputRef}
           type="text"
-          name="title" // Ważne: name musi pasować do klucza w values
+          name="title"
           placeholder="Co masz do zrobienia?"
           value={values.title}
           onChange={handleChange}
           onBlur={handleBlur}
           className={errors.title ? 'input-error' : ''}
-          // useRef dla autofocusa dodamy w Zadaniu 6
           id="task-input" 
+          autoComplete="off"
         />
         <div className="form-info">
           <small>{values.title.length}/100 znaków</small>
@@ -52,7 +77,7 @@ function TaskForm() {
         </div>
       </div>
 
-      <div className="form-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+      <div className="form-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px', flexWrap: 'wrap' }}>
         <select name="priority" value={values.priority} onChange={handleChange} style={{ flex: 1 }}>
           <option value="low">Niski</option>
           <option value="medium">Średni</option>
@@ -65,6 +90,22 @@ function TaskForm() {
           <option value="Zakupy">Zakupy</option>
           <option value="Inne">Inne</option>
         </select>
+
+        {/* 3.  Input wyboru daty ze stylami pod Dark Mode */}
+        <input 
+          type="date"
+          name="dueDate"
+          value={values.dueDate}
+          onChange={handleChange}
+          style={{ 
+            flex: 1, 
+            padding: '8px', 
+            border: '1px solid var(--border-color)', 
+            borderRadius: '4px',
+            background: 'var(--input-bg)', // Ważne dla Dark Mode
+            color: 'var(--text-primary)'    // Ważne dla Dark Mode
+          }}
+        />
       </div>
 
       <button type="submit" disabled={values.title.length < 3}>

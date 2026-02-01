@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer, useCallback, useMemo } from 'react';
 import { tasksApi } from '../api/tasksApi';
 import { tasksReducer, initialState } from '../reducers/tasksReducer';
 import { 
@@ -11,33 +11,25 @@ import {
   updateTaskAction, 
   changePriorityAction, 
   clearAllAction,
-  clearCompletedAction, 
-  toggleAllAction       
+  clearCompletedAction,
+  toggleAllAction
 } from '../actions/taskActions';
-
-
 
 const TasksContext = createContext(null);
 
 export const TasksProvider = ({ children }) => {
-  // 1. Inicjalizacja reducera z "Lazy Initialization" (wczytanie localStorage na start)
   const [state, dispatch] = useReducer(tasksReducer, initialState, (defaultState) => {
     const saved = localStorage.getItem('myTasks');
-    return saved 
-      ? { ...defaultState, tasks: JSON.parse(saved) } 
-      : defaultState;
+    return saved ? { ...defaultState, tasks: JSON.parse(saved) } : defaultState;
   });
 
-  // 2. Efekt: Pobieranie danych z API (jeśli lista pusta)
+  // 1. Efekt: Pobieranie danych
   useEffect(() => {
     const controller = new AbortController();
-
     if (state.tasks.length === 0) {
-      dispatch(setLoading(true)); // Używamy Action Creator
-
+      dispatch(setLoading(true));
       tasksApi.fetchTasks(controller.signal)
         .then(data => {
-          // Mapujemy dane z API (dodajemy brakujące pola)
           const apiTasks = data.map(t => ({
             id: t.id,
             title: t.title,
@@ -45,8 +37,7 @@ export const TasksProvider = ({ children }) => {
             priority: 'medium',
             category: 'Inne'
           }));
-          
-          dispatch(tasksLoaded(apiTasks)); // Wysyłamy akcję TASKS_LOADED
+          dispatch(tasksLoaded(apiTasks));
         })
         .catch(err => {
           if (err.name !== 'AbortError') {
@@ -55,64 +46,58 @@ export const TasksProvider = ({ children }) => {
           }
         });
     }
-
     return () => controller.abort();
-  }, []); // Pusta tablica zależności - tylko przy montowaniu
+  }, []);
 
-  // 3. Efekt: Zapisywanie do localStorage i symulacja API przy każdej zmianie tasks
+  // 2. Efekt: Zapisywanie (zwróciłem tu tasksApi.saveTasks z Twojego oryginału)
   useEffect(() => {
     localStorage.setItem('myTasks', JSON.stringify(state.tasks));
     
-    // Opcjonalnie: symulacja zapisu do API (bez wpływu na Reducer, to tylko efekt uboczny)
     if (state.tasks.length > 0) {
       tasksApi.saveTasks(state.tasks).catch(err => console.error(err));
     }
   }, [state.tasks]);
 
 
-  // 4. Funkcje pomocnicze (Wrapper Functions)
-  // Komponenty nie muszą wiedzieć o "dispatch", po prostu wywołują funkcje jak dawniej
+  // 3. OPTYMALIZACJA: useCallback
+  const addTask = useCallback((task) => dispatch(addTaskAction(task)), []);
   
-  const addTask = (task) => dispatch(addTaskAction(task));
+  const deleteTask = useCallback((id) => dispatch(deleteTaskAction(id)), []);
   
-  const deleteTask = (id) => dispatch(deleteTaskAction(id));
+  const toggleTask = useCallback((id) => dispatch(toggleTaskAction(id)), []);
   
-  const toggleTask = (id) => dispatch(toggleTaskAction(id));
+  const updateTask = useCallback((id, title) => dispatch(updateTaskAction(id, title)), []);
   
-  const updateTask = (id, title) => dispatch(updateTaskAction(id, title));
-  
-  const changePriority = (id, priority) => dispatch(changePriorityAction(id, priority));
+  const changePriority = useCallback((id, priority) => dispatch(changePriorityAction(id, priority)), []);
 
-  const clearCompleted = () => {
-  // Usuwamy bez pytania, albo z pytaniem - jak wolisz
-  dispatch(clearCompletedAction());
-};
-
-const toggleAll = () => {
-  dispatch(toggleAllAction());
-};
-
-  const clearAllTasks = () => {
+  const clearAllTasks = useCallback(() => {
     if (window.confirm("Czy na pewno chcesz usunąć wszystkie zadania?")) {
       dispatch(clearAllAction());
     }
-  };
+  }, []);
 
-  // 5. Wartości udostępniane w Context
-  const value = {
-    tasks: state.tasks,      // Pobieramy ze stanu reducera
+  const clearCompleted = useCallback(() => dispatch(clearCompletedAction()), []);
+  
+  const toggleAll = useCallback(() => dispatch(toggleAllAction()), []);
+
+  // 4. OPTYMALIZACJA: useMemo dla obiektu value
+  const value = useMemo(() => ({
+    tasks: state.tasks,
     isLoading: state.isLoading,
-    error: state.error,      // Nowość: obsługa błędów
-    lastUpdated: state.lastUpdated, // Nowość: timestamp
+    error: state.error,
+    lastUpdated: state.lastUpdated,
     addTask,
     deleteTask,
     toggleTask,
     updateTask,
     changePriority,
     clearAllTasks,
-    clearCompleted, 
-    toggleAll       
-  };
+    clearCompleted,
+    toggleAll
+  }), [
+    state.tasks, state.isLoading, state.error, state.lastUpdated, 
+    addTask, deleteTask, toggleTask, updateTask, changePriority, clearAllTasks, clearCompleted, toggleAll
+  ]);
 
   return (
     <TasksContext.Provider value={value}>

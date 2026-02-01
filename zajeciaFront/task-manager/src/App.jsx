@@ -6,44 +6,58 @@ import NotFound from './pages/NotFound';
 import TaskDetailsPage from './pages/TaskDetailsPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import './App.css';
 
-// Hooki już tu nie są potrzebne, są w TasksPage!
-// App służy teraz tylko do definicji tras (Routing)
+// Importujemy Providery (Konteksty)
+import { TasksProvider } from './context/TasksContext';
+import { FilterProvider } from './context/FilterContext';
+import { ThemeProvider } from './context/ThemeContext'; // <--- Nowość (Dark Mode)
+
+import './App.css';
 
 function App() {
   return (
-    <Routes>
-      {/* Layout jest rodzicem dla wszystkich podstron */}
-      <Route path="/" element={<Layout />}>
-        
-        {/* Ścieżka główna: Wyświetla TasksPage */}
-        <Route index element={<TasksPage />} />
-        
-        {/* Ścieżka /tasks również wyświetla TasksPage */}
-        <Route path="tasks" element={<TasksPage />} />
+    // KOLEJNOŚĆ JEST WAŻNA:
+    // 1. ThemeProvider (wygląd)
+    // 2. TasksProvider (dane)
+    // 3. FilterProvider (filtrowanie danych)
+    // 4. Routes (nawigacja)
+    <ThemeProvider>
+      <TasksProvider>
+        <FilterProvider>
+          <Routes>
+            {/* Layout jest rodzicem dla wszystkich podstron */}
+            <Route path="/" element={<Layout />}>
+              
+              {/* Ścieżka główna: Wyświetla TasksPage */}
+              <Route index element={<TasksPage />} />
+              
+              {/* Ścieżka /tasks również wyświetla TasksPage */}
+              <Route path="tasks" element={<TasksPage />} />
 
-        {/* NOWA TRASA: Dwukropek oznacza parametr dynamiczny (np. ID zadania) */}
-        <Route path="tasks/:taskId" element={<TaskDetailsPage />} />
-        
-        {/* TRASA PUBLICZNA: Strona logowania */}
-        <Route path="login" element={<LoginPage />} />
-        
-        {/* TRASA CHRONIONA: Dostępna tylko dla zalogowanych użytkowników */}
-        <Route 
-          path="settings" 
-          element={
-            <ProtectedRoute>
-              <SettingsPage />
-            </ProtectedRoute>
-          } 
-        />
-        
-        {/* Obsługa 404 - każda inna ścieżka */}
-        <Route path="*" element={<NotFound />} />
-        
-      </Route>
-    </Routes>
+              {/* Dynamiczna ścieżka do szczegółów */}
+              <Route path="tasks/:taskId" element={<TaskDetailsPage />} />
+              
+              {/* Strona logowania */}
+              <Route path="login" element={<LoginPage />} />
+              
+              {/* Trasa chroniona: Ustawienia */}
+              <Route 
+                path="settings" 
+                element={
+                  <ProtectedRoute>
+                    <SettingsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Obsługa 404 */}
+              <Route path="*" element={<NotFound />} />
+              
+            </Route>
+          </Routes>
+        </FilterProvider>
+      </TasksProvider>
+    </ThemeProvider>
   );
 }
 
