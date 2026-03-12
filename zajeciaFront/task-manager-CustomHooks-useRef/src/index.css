@@ -1,0 +1,46 @@
+:root {
+  /* Tryb Jasny (Domyślny) */
+  --bg-body: #f4f7f6;
+  --bg-card: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --input-bg: #ffffff;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  /* Tryb Ciemny */
+  --bg-body: #1a1a1a;
+  --bg-card: #2d2d2d;
+  --text-primary: #e0e0e0;
+  --text-secondary: #aaaaaa;
+  --border-color: #444444;
+  --input-bg: #333333;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s; /* Płynne przejście */
+}
+
+/* Aktualizacja stylów ogólnych, żeby korzystały ze zmiennych */
+input, select, textarea {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.card, .task-item, .stats-container {
+  background-color: var(--bg-card) !important; /* Wymuszamy kolor tła */
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+}
+
+button {
+  cursor: pointer;
+}
