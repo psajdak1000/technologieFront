@@ -1,0 +1,65 @@
+import { useState, useEffect, useCallback } from 'react';
+
+export function useFetch(url, options = {}) {
+  // Wyciągamy opcje z przypisaniem domyślnych wartości
+  const { enabled = true, transform } = options;
+
+  // 1. Zarządzanie trzema stanami
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(enabled); // Jeśli enabled=false, nie ładujemy od razu
+  const [error, setError] = useState(null);
+
+  // Główna funkcja pobierająca, opakowana w useCallback, aby nie zmieniała referencji
+  const fetchData = useCallback(async (abortSignal) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(url, { signal: abortSignal });
+      if (!response.ok) {
+        throw new Error(`Błąd HTTP: ${response.status}`);
+      }
+      
+      let json = await response.json();
+
+      // Jeśli przekazano funkcję transformującą, modyfikujemy dane
+      if (transform) {
+        json = transform(json);
+      }
+
+      setData(json);
+    } catch (err) {
+      // Ignorujemy błędy przerwania żądania (AbortError)
+      if (err.name !== 'AbortError') {
+        setError(err.message || 'Wystąpił błąd podczas pobierania danych');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [url, transform]); // Reaguje na zmianę URL lub funkcji transform
+
+  // 2. Automatyczne pobieranie przy zmianie url i cleanup
+  useEffect(() => {
+    // Jeśli pobieranie jest wyłączone (enabled: false), nie rób nic
+    if (!enabled) return;
+
+    // Inicjalizacja AbortController
+    const controller = new AbortController();
+    
+    // Wywołanie pobierania z przekazaniem sygnału
+    fetchData(controller.signal);
+
+    // Cleanup function - anulowanie żądania przy odmontowaniu lub zmianie zależności
+    return () => {
+      controller.abort();
+    };
+  }, [enabled, fetchData]);
+
+  // 3. Funkcja refetch do ręcznego ponowienia żądania
+  const refetch = useCallback(() => {
+    fetchData();
+  }, [fetchData]);
+
+  // 4. Zwracany obiekt
+  return { data, loading, error, refetch };
+}
