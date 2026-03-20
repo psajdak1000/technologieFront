@@ -1,24 +1,24 @@
 import { createContext, useState, useContext, useMemo } from 'react'; 
 import { useTasks } from './TasksContext';
 
-// 1. IMPORTUJEMY NASZ HOOK
+// 1. IMPORTUJEMY NASZE HOOKI
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useDebounce } from '../hooks/useDebounce'; // <--- DODANY IMPORT
 
 const FilterContext = createContext(null);
 
 export const FilterProvider = ({ children }) => {
   const { tasks } = useTasks();
 
-  // 2. ZAMIENIAMY useState NA useLocalStorage
-  // Dzięki temu po odświeżeniu strony aplikacja zapamięta Twoje ustawienia!
   const [filterStatus, setFilterStatus] = useLocalStorage('taskFilterStatus', 'all');
   const [filterCategory, setFilterCategory] = useLocalStorage('taskFilterCategory', 'all');
   const [sortType, setSortType] = useLocalStorage('taskSortType', 'default');
   
-  // Wyszukiwanie zostawiamy w zwykłym useState (zajmiemy się nim w Części C!)
   const [searchQuery, setSearchQuery] = useState('');
 
-  // OPTYMALIZACJA: useMemo zapamiętuje wynik tej funkcji. (Bez zmian)
+  // 2. TWORZYMY OPÓŹNIONĄ WERSJĘ WYSZUKIWANIA (300ms)
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
   const filteredTasks = useMemo(() => {
     
     console.log("🔄 Przeprowadzam kosztowne filtrowanie..."); 
@@ -32,9 +32,9 @@ export const FilterProvider = ({ children }) => {
         // 2. Kategoria
         if (filterCategory !== 'all' && task.category !== filterCategory) return false;
         
-        // 3. Wyszukiwanie
-        if (searchQuery) {
-          if (!task.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+        // 3. Wyszukiwanie - ZMIANA na debouncedSearchQuery!
+        if (debouncedSearchQuery) {
+          if (!task.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())) return false;
         }
         return true;
       })
@@ -48,12 +48,13 @@ export const FilterProvider = ({ children }) => {
         return 0;
       });
 
-  }, [tasks, filterStatus, filterCategory, searchQuery, sortType]); 
+  // 4. ZMIANA ZALEŻNOŚCI: Reagujemy na debouncedSearchQuery, a nie na searchQuery
+  }, [tasks, filterStatus, filterCategory, debouncedSearchQuery, sortType]); 
 
   const value = {
     filterStatus, setFilterStatus,
     filterCategory, setFilterCategory,
-    searchQuery, setSearchQuery,
+    searchQuery, setSearchQuery, // Tutaj zostaje standardowy setter, aby input działał płynnie
     sortType, setSortType,
     filteredTasks 
   };
