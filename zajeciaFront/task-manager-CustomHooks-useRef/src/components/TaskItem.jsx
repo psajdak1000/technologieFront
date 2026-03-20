@@ -2,9 +2,12 @@ import { useState, useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
 import AutoResizeTextarea from './AutoResizeTextarea';
 import './TaskItem.css';
+import { useRenderCount } from '../hooks/useRenderCount';
 
-// ZMIANA: Dodajemy taskRef i isNew do listy propsów!
 function TaskItem({ id, title, completed, priority, category, dueDate, onToggle, onDelete, onChangePriority, onUpdate, taskRef, isNew }) {
+  
+  // POPRAWKA: Hook wywołany prawidłowo - WEWNĄTRZ funkcji komponentu
+  useRenderCount('TaskItem');
   
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
@@ -54,7 +57,6 @@ function TaskItem({ id, title, completed, priority, category, dueDate, onToggle,
   };
 
   return (
-    // ZMIANA: Podpinamy ref={taskRef} i warunkowo dorzucamy klasę animacji 'just-added'
     <li 
       ref={taskRef} 
       className={`task-item ${completed ? 'completed' : ''} priority-${priority} ${isNew ? 'just-added' : ''}`}
