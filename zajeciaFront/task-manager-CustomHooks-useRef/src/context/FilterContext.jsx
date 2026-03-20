@@ -1,24 +1,26 @@
-import { createContext, useState, useContext, useMemo } from 'react'; //  Import useMemo
+import { createContext, useState, useContext, useMemo } from 'react'; 
 import { useTasks } from './TasksContext';
+
+// 1. IMPORTUJEMY NASZ HOOK
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const FilterContext = createContext(null);
 
 export const FilterProvider = ({ children }) => {
   const { tasks } = useTasks();
 
-  // Stany filtrów
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterCategory, setFilterCategory] = useState('all');
+  // 2. ZAMIENIAMY useState NA useLocalStorage
+  // Dzięki temu po odświeżeniu strony aplikacja zapamięta Twoje ustawienia!
+  const [filterStatus, setFilterStatus] = useLocalStorage('taskFilterStatus', 'all');
+  const [filterCategory, setFilterCategory] = useLocalStorage('taskFilterCategory', 'all');
+  const [sortType, setSortType] = useLocalStorage('taskSortType', 'default');
+  
+  // Wyszukiwanie zostawiamy w zwykłym useState (zajmiemy się nim w Części C!)
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortType, setSortType] = useState('default');
 
-  // 2. OPTYMALIZACJA: useMemo zapamiętuje wynik tej funkcji.
-  // Dzięki temu sortowanie i filtrowanie nie wykonuje się przy każdym kliknięciu w aplikacji,
-  // a jedynie wtedy, gdy zmienią się dane wejściowe (tablica zależności na dole).
+  // OPTYMALIZACJA: useMemo zapamiętuje wynik tej funkcji. (Bez zmian)
   const filteredTasks = useMemo(() => {
     
-    // Ten log pokaże nam w konsoli, kiedy faktycznie liczymy.
-    // Powinien się pojawić TYLKO gdy zmienisz filtr lub dodasz zadanie.
     console.log("🔄 Przeprowadzam kosztowne filtrowanie..."); 
     
     return tasks
@@ -41,20 +43,19 @@ export const FilterProvider = ({ children }) => {
         if (sortType === 'alpha') return a.title.localeCompare(b.title);
         if (sortType === 'priority') {
           const priorityWeight = { high: 3, medium: 2, low: 1 };
-          // (priorityWeight[b.priority] || 0) zabezpiecza przed brakiem priorytetu
           return (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0);
         }
         return 0;
       });
 
-  }, [tasks, filterStatus, filterCategory, searchQuery, sortType]); // <--- 3. Tablica zależności
+  }, [tasks, filterStatus, filterCategory, searchQuery, sortType]); 
 
   const value = {
     filterStatus, setFilterStatus,
     filterCategory, setFilterCategory,
     searchQuery, setSearchQuery,
     sortType, setSortType,
-    filteredTasks // Przekazujemy wynik obliczony przez useMemo
+    filteredTasks 
   };
 
   return (

@@ -1,29 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export const useLocalStorage = (key, initialValue) => {
-  // 1. Inicjalizacja stanu z localStorage
-  const [storedValue, setStoredValue] = useState(() => {
+export function useLocalStorage(key, initialValue) {
+  // 1. Lazy initial state — odczyt z localStorage tylko przy pierwszym renderze
+  const [value, setValue] = useState(() => {
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      const saved = window.localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : initialValue;
     } catch (error) {
-      console.error(error);
-      return initialValue;
+      // 3. Obsługa błędów JSON.parse (try/catch) — używamy initialValue w razie błędu
+      console.error("Błąd odczytu z localStorage:", error);
+      return initialValue; 
     }
   });
 
-  // 2. Funkcja setter, która aktualizuje stan I localStorage
-  const setValue = (value) => {
+  // 2. Automatyczny zapis do localStorage przy każdej zmianie wartości (używamy useEffect)
+  useEffect(() => {
     try {
-      // Pozwala na przekazanie funkcji (tak jak w useState)
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      window.localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      console.error(error);
+      console.error("Błąd zapisu do localStorage:", error);
     }
-  };
+  }, [key, value]); // Hook uruchomi się ponownie, gdy zmieni się 'key' lub 'value'
 
-  return [storedValue, setValue];
-};
+  // 4. Zwraca [value, setValue] — identyczny interfejs jak useState
+  return [value, setValue];
+}

@@ -15,15 +15,21 @@ import {
   toggleAllAction
 } from '../actions/taskActions';
 
+// 1. IMPORTUJEMY NASZ NOWY HOOK
+import { useLocalStorage } from '../hooks/useLocalStorage';
+
 const TasksContext = createContext(null);
 
 export const TasksProvider = ({ children }) => {
+  // 2. INICJALIZUJEMY HOOK (odczyt z pamięci przeglądarki)
+  const [savedTasks, setSavedTasks] = useLocalStorage('myTasks', []);
+
+  // 3. PRZEKAZUJEMY DANE Z HOOKA DO REDUCERA (zamiast używać localStorage.getItem)
   const [state, dispatch] = useReducer(tasksReducer, initialState, (defaultState) => {
-    const saved = localStorage.getItem('myTasks');
-    return saved ? { ...defaultState, tasks: JSON.parse(saved) } : defaultState;
+    return savedTasks && savedTasks.length > 0 ? { ...defaultState, tasks: savedTasks } : defaultState;
   });
 
-  // 1. Efekt: Pobieranie danych
+  // Efekt 1: Pobieranie danych z serwera (bez zmian)
   useEffect(() => {
     const controller = new AbortController();
     if (state.tasks.length === 0) {
@@ -47,27 +53,24 @@ export const TasksProvider = ({ children }) => {
         });
     }
     return () => controller.abort();
-  }, []);
+  }, [state.tasks.length]);
 
-  // 2. Efekt: Zapisywanie (zwróciłem tu tasksApi.saveTasks z Twojego oryginału)
+  // Efekt 2: Zapisywanie zmian w zadaniach
   useEffect(() => {
-    localStorage.setItem('myTasks', JSON.stringify(state.tasks));
+    // 4. UŻYWAMY SETTERA Z HOOKA DO ZAPISU (zamiast localStorage.setItem)
+    setSavedTasks(state.tasks);
     
+    // Zapis do API (bez zmian)
     if (state.tasks.length > 0) {
       tasksApi.saveTasks(state.tasks).catch(err => console.error(err));
     }
-  }, [state.tasks]);
+  }, [state.tasks, setSavedTasks]);
 
-
-  // 3. OPTYMALIZACJA: useCallback
+  // OPTYMALIZACJE: useCallback (bez zmian)
   const addTask = useCallback((task) => dispatch(addTaskAction(task)), []);
-  
   const deleteTask = useCallback((id) => dispatch(deleteTaskAction(id)), []);
-  
   const toggleTask = useCallback((id) => dispatch(toggleTaskAction(id)), []);
-  
   const updateTask = useCallback((id, title) => dispatch(updateTaskAction(id, title)), []);
-  
   const changePriority = useCallback((id, priority) => dispatch(changePriorityAction(id, priority)), []);
 
   const clearAllTasks = useCallback(() => {
@@ -77,10 +80,9 @@ export const TasksProvider = ({ children }) => {
   }, []);
 
   const clearCompleted = useCallback(() => dispatch(clearCompletedAction()), []);
-  
   const toggleAll = useCallback(() => dispatch(toggleAllAction()), []);
 
-  // 4. OPTYMALIZACJA: useMemo dla obiektu value
+  // OPTYMALIZACJA: useMemo dla obiektu value (bez zmian)
   const value = useMemo(() => ({
     tasks: state.tasks,
     isLoading: state.isLoading,
