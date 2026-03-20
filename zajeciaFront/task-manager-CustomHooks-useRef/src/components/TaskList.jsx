@@ -5,10 +5,8 @@ import { useFilters } from '../context/FilterContext';
 
 function TaskList() {
   const { filteredTasks, searchQuery } = useFilters();
-  
-  // 1. ZMIANA: Pobieramy state i dispatch z naszego nowego Contextu
   const { state, dispatch } = useTasks();
-  const tasks = state.tasks; // Wyciągamy same zadania do naszej logiki scrollowania
+  const tasks = state.tasks;
 
   const lastTaskRef = useRef(null);
   const prevTasksLength = useRef(tasks.length);
@@ -48,11 +46,17 @@ function TaskList() {
           <TaskItem 
             key={task.id} 
             {...task}
-            // 2. ZMIANA: Zastępujemy stare callbacki wysyłaniem akcji do reducera
             onToggle={(id) => dispatch({ type: 'TOGGLE_TASK', payload: id })}
             onDelete={(id) => dispatch({ type: 'DELETE_TASK', payload: id })}
             onChangePriority={(id, priority) => dispatch({ type: 'CHANGE_PRIORITY', payload: { id, priority } })}
             onUpdate={(id, title) => dispatch({ type: 'UPDATE_TASK', payload: { id, title } })}
+            
+            // --- NOWE PROPSY DLA STRZAŁEK (REORDER) ---
+            index={index}
+            isFirstItem={index === 0}
+            isLastItem={isLast}
+            onReorder={(idx, direction) => dispatch({ type: 'REORDER_TASKS', payload: { index: idx, direction } })}
+            // ----------------------------------------
             
             taskRef={(el) => {
               if (isLast) lastTaskRef.current = el;

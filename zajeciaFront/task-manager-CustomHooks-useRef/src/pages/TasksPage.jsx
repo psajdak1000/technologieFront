@@ -4,17 +4,13 @@ import TaskList from '../components/TaskList';
 import FilterButtons from '../components/FilterButtons';
 import TaskStats from '../components/TaskStats';
 import Card from '../components/Card';
-
-// 1. ZMIANA: Zostawiamy tylko ten import, używamy tylko globalnego stanu z reducera
 import { useTasks } from '../context/TasksContext'; 
 import { useTheme } from '../context/ThemeContext';
 
 function TasksPage() {
-  // 2. ZMIANA: Wyciągamy 'state' i 'dispatch' zamiast starej listy callbacków
   const { state, dispatch } = useTasks();
   const { theme, toggleTheme } = useTheme();
 
-  // 3. ZMIANA: Wyciągamy poszczególne kawałki stanu z naszego głównego obiektu 'state'
   const { isLoading, tasks, searchQuery, filterCategory, sortType } = state;
 
   const searchInputRef = useRef(null);
@@ -45,13 +41,9 @@ function TasksPage() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 4. ZMIANA: Funkcja pomocnicza do czyszczenia z potwierdzeniem (przeniesiona z kontekstu)
   const handleClearAll = () => {
     if (window.confirm("Czy na pewno chcesz usunąć wszystkie zadania?")) {
       dispatch({ type: 'CLEAR_ALL' });
@@ -87,7 +79,6 @@ function TasksPage() {
         <TaskForm />
         
         <div className="controls-panel" style={{ margin: '20px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {/* 5. ZMIANA: Używamy dispatch do aktualizacji frazy wyszukiwania */}
           <input 
             ref={searchInputRef}
             id="search-input"
@@ -99,7 +90,6 @@ function TasksPage() {
           />
 
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {/* 6. ZMIANA: Używamy dispatch do aktualizacji kategorii */}
             <select 
               value={filterCategory} 
               onChange={(e) => dispatch({ type: 'SET_CATEGORY_FILTER', payload: e.target.value })}
@@ -112,7 +102,6 @@ function TasksPage() {
               <option value="Inne">Inne</option>
             </select>
 
-            {/* 7. ZMIANA: Używamy dispatch do aktualizacji sortowania */}
             <select 
               value={sortType} 
               onChange={(e) => dispatch({ type: 'SET_SORT', payload: e.target.value })}
@@ -135,7 +124,6 @@ function TasksPage() {
 
         {tasks.length > 0 && (
           <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {/* 8. ZMIANA: Podpinamy dispatch do przycisków na dole */}
             <button onClick={() => dispatch({ type: 'TOGGLE_ALL' })} className="action-btn" style={{ background: '#3498db', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
               Zaznacz/Odznacz
             </button>
@@ -145,6 +133,18 @@ function TasksPage() {
             <button onClick={handleClearAll} className="clear-all-btn" style={{ background: '#e74c3c', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
               Wyczyść wszystko
             </button>
+            
+            {/* --- NOWOŚĆ: Przycisk COFNIJ --- */}
+            {state.previousTasks && (
+              <button 
+                onClick={() => dispatch({ type: 'UNDO' })} 
+                className="action-btn" 
+                style={{ background: '#95a5a6', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                ↩ Cofnij
+              </button>
+            )}
+            {/* --------------------------------- */}
           </div>
         )}
       </Card>
