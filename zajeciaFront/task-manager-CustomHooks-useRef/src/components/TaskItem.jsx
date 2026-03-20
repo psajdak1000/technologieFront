@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import AutoResizeTextarea from './AutoResizeTextarea';
 import './TaskItem.css';
 
-// 1. NOWOŚĆ: Dodajemy dueDate do listy propsów
-function TaskItem({ id, title, completed, priority, category, dueDate, onToggle, onDelete, onChangePriority, onUpdate }) {
+// ZMIANA: Dodajemy taskRef i isNew do listy propsów!
+function TaskItem({ id, title, completed, priority, category, dueDate, onToggle, onDelete, onChangePriority, onUpdate, taskRef, isNew }) {
   
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
@@ -50,12 +50,15 @@ function TaskItem({ id, title, completed, priority, category, dueDate, onToggle,
 
   const styles = {
     textDecoration: completed ? "line-through" : "none",
-    // 2. NOWOŚĆ: Używamy zmiennej zamiast 'black', żeby działało w Dark Mode
     color: completed ? "gray" : "var(--text-primary)" 
   };
 
   return (
-    <li className={`task-item ${completed ? 'completed' : ''} priority-${priority}`}>
+    // ZMIANA: Podpinamy ref={taskRef} i warunkowo dorzucamy klasę animacji 'just-added'
+    <li 
+      ref={taskRef} 
+      className={`task-item ${completed ? 'completed' : ''} priority-${priority} ${isNew ? 'just-added' : ''}`}
+    >
       <div className="task-left">
         <input 
           type="checkbox" 
@@ -85,7 +88,6 @@ function TaskItem({ id, title, completed, priority, category, dueDate, onToggle,
                  </span>
               </Link>
 
-              {/* 3. NOWOŚĆ: Wyświetlanie daty (jeśli istnieje) */}
               {dueDate && (
                 <span style={{ 
                   fontSize: '0.8rem', 

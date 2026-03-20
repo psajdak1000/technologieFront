@@ -39,3 +39,19 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* Animacja dla nowo dodanego zadania */
+@keyframes highlightNew {
+  0% { 
+    background-color: rgba(40, 167, 69, 0.3); 
+    transform: scale(1.02); 
+  }
+  100% { 
+    background-color: transparent; 
+    transform: scale(1); 
+  }
+}
+
+.just-added {
+  animation: highlightNew 1.5s ease-out;
+}
