@@ -3,12 +3,11 @@ import { useTasks } from '../context/TasksContext';
 import { useForm } from '../hooks/useForm';
 
 function TaskForm() {
-  const { addTask } = useTasks();
+  // 1. ZMIANA: Zamiast 'addTask' pobieramy nasz 'dispatch'
+  const { dispatch } = useTasks();
   
-  // Ref do inputa
   const inputRef = useRef(null);
 
-  // Walidacja
   const validate = (values) => {
     let errors = {};
     if (!values.title || values.title.trim().length < 3) {
@@ -17,31 +16,28 @@ function TaskForm() {
     return errors;
   };
 
-  // Wysyłka
   const submitTask = (values) => {
     const newTask = {
       id: crypto.randomUUID(),
       title: values.title.trim(),
       priority: values.priority,
       category: values.category,
-      dueDate: values.dueDate, // <--- 1. NOWOŚĆ: Zapisujemy datę
+      dueDate: values.dueDate, 
       completed: false
     };
     
-    addTask(newTask);
+    // 2. ZMIANA: Wysyłamy akcję ADD_TASK do naszego reducera!
+    dispatch({ type: 'ADD_TASK', payload: newTask });
 
-    // Przywracamy focus
     inputRef.current?.focus();
   };
 
   const { values, errors, handleChange, handleBlur, handleSubmit } = useForm(
-    // 2. NOWOŚĆ: Dodajemy dueDate do stanu początkowego
     { title: '', priority: 'medium', category: 'Praca', dueDate: '' },
     validate,
     submitTask
   );
 
-  // Obsługa Auto-focus i skrótu Alt+N
   useEffect(() => {
     inputRef.current?.focus();
 
@@ -91,7 +87,6 @@ function TaskForm() {
           <option value="Inne">Inne</option>
         </select>
 
-        {/* 3.  Input wyboru daty ze stylami pod Dark Mode */}
         <input 
           type="date"
           name="dueDate"
@@ -102,8 +97,8 @@ function TaskForm() {
             padding: '8px', 
             border: '1px solid var(--border-color)', 
             borderRadius: '4px',
-            background: 'var(--input-bg)', // Ważne dla Dark Mode
-            color: 'var(--text-primary)'    // Ważne dla Dark Mode
+            background: 'var(--input-bg)',
+            color: 'var(--text-primary)'
           }}
         />
       </div>

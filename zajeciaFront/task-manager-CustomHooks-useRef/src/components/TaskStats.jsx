@@ -1,21 +1,23 @@
 import { memo, useEffect, useState } from 'react';
 import { useTasks } from '../context/TasksContext';
-import { usePrevious } from '../hooks/usePrevious'; // <--- 1. Import
+import { usePrevious } from '../hooks/usePrevious'; 
 
 function TaskStats() {
-  const { tasks } = useTasks();
+  // --- ZMIANA: Wyciągamy 'state' i z niego bierzemy 'tasks' ---
+  const { state } = useTasks();
+  const tasks = state.tasks;
   
   const totalTasks = tasks.length;
   const activeTasks = tasks.filter(t => !t.completed).length;
   const completedTasks = tasks.filter(t => t.completed).length;
 
-  // 2. Używamy hooka, aby pamiętać ile zadań było przed chwilą
+  // Używamy hooka, aby pamiętać ile zadań było przed chwilą
   const prevTotalTasks = usePrevious(totalTasks);
   
   // Stan dla komunikatu o zmianie ('added', 'removed', null)
   const [changeType, setChangeType] = useState(null);
 
-  // 3. Efekt: Wykrywamy zmianę liczby zadań i ustawiamy animację
+  // Efekt: Wykrywamy zmianę liczby zadań i ustawiamy animację
   useEffect(() => {
     // Pomijamy pierwsze uruchomienie (gdy prev jest undefined)
     if (prevTotalTasks === undefined) return;
@@ -60,7 +62,7 @@ function TaskStats() {
       <div className="stat-box">
         <strong>Wszystkie:</strong> {totalTasks}
         
-        {/* 4. Wyświetlanie komunikatu zmiany */}
+        {/* Wyświetlanie komunikatu zmiany */}
         {changeType && (
           <span style={getNotificationStyle()}>
             {changeType === 'added' ? '⬆ Dodano!' : '⬇ Usunięto'}

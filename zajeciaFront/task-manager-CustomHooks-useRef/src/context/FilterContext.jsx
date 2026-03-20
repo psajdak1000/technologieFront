@@ -3,12 +3,14 @@ import { useTasks } from './TasksContext';
 
 // 1. IMPORTUJEMY NASZE HOOKI
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { useDebounce } from '../hooks/useDebounce'; // <--- DODANY IMPORT
+import { useDebounce } from '../hooks/useDebounce';
 
 const FilterContext = createContext(null);
 
 export const FilterProvider = ({ children }) => {
-  const { tasks } = useTasks();
+  // ---> ZMIANA TUTAJ: Wyciągamy 'state' zamiast 'tasks' <---
+  const { state } = useTasks();
+  const tasks = state.tasks;
 
   const [filterStatus, setFilterStatus] = useLocalStorage('taskFilterStatus', 'all');
   const [filterCategory, setFilterCategory] = useLocalStorage('taskFilterCategory', 'all');
@@ -32,7 +34,7 @@ export const FilterProvider = ({ children }) => {
         // 2. Kategoria
         if (filterCategory !== 'all' && task.category !== filterCategory) return false;
         
-        // 3. Wyszukiwanie - ZMIANA na debouncedSearchQuery!
+        // 3. Wyszukiwanie
         if (debouncedSearchQuery) {
           if (!task.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())) return false;
         }
@@ -48,13 +50,13 @@ export const FilterProvider = ({ children }) => {
         return 0;
       });
 
-  // 4. ZMIANA ZALEŻNOŚCI: Reagujemy na debouncedSearchQuery, a nie na searchQuery
+  // Reagujemy na debouncedSearchQuery
   }, [tasks, filterStatus, filterCategory, debouncedSearchQuery, sortType]); 
 
   const value = {
     filterStatus, setFilterStatus,
     filterCategory, setFilterCategory,
-    searchQuery, setSearchQuery, // Tutaj zostaje standardowy setter, aby input działał płynnie
+    searchQuery, setSearchQuery, 
     sortType, setSortType,
     filteredTasks 
   };

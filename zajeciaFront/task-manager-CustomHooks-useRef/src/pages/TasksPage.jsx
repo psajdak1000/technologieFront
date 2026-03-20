@@ -4,26 +4,22 @@ import TaskList from '../components/TaskList';
 import FilterButtons from '../components/FilterButtons';
 import TaskStats from '../components/TaskStats';
 import Card from '../components/Card';
-import { useTasks } from '../context/TasksContext';
-import { useFilters } from '../context/FilterContext';
-import { useTheme } from '../context/ThemeContext'; // <--- 1. NOWOŚĆ: Import motywu
+
+// 1. ZMIANA: Zostawiamy tylko ten import, używamy tylko globalnego stanu z reducera
+import { useTasks } from '../context/TasksContext'; 
+import { useTheme } from '../context/ThemeContext';
 
 function TasksPage() {
-  const { isLoading, isSaving, clearAllTasks, clearCompleted, toggleAll, tasks } = useTasks();
-  
-  // 2. NOWOŚĆ: Użycie hooka motywu
+  // 2. ZMIANA: Wyciągamy 'state' i 'dispatch' zamiast starej listy callbacków
+  const { state, dispatch } = useTasks();
   const { theme, toggleTheme } = useTheme();
 
-  const { 
-    searchQuery, setSearchQuery, 
-    filterCategory, setFilterCategory, 
-    sortType, setSortType 
-  } = useFilters();
+  // 3. ZMIANA: Wyciągamy poszczególne kawałki stanu z naszego głównego obiektu 'state'
+  const { isLoading, tasks, searchQuery, filterCategory, sortType } = state;
 
   const searchInputRef = useRef(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Obsługa skrótu Ctrl+K/Cmd+K
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -35,7 +31,6 @@ function TasksPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Obsługa scrollowania (pokazywanie przycisku)
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 300) {
@@ -56,16 +51,22 @@ function TasksPage() {
     });
   };
 
+  // 4. ZMIANA: Funkcja pomocnicza do czyszczenia z potwierdzeniem (przeniesiona z kontekstu)
+  const handleClearAll = () => {
+    if (window.confirm("Czy na pewno chcesz usunąć wszystkie zadania?")) {
+      dispatch({ type: 'CLEAR_ALL' });
+    }
+  };
+
   return (
     <div>
-      {/* 3. NOWOŚĆ: Przycisk zmiany motywu na górze strony */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 0' }}>
         <button 
           onClick={toggleTheme}
           style={{
             background: 'transparent',
-            border: '2px solid var(--border-color)', // Używa zmiennych CSS
-            color: 'var(--text-primary)',            // Używa zmiennych CSS
+            border: '2px solid var(--border-color)',
+            color: 'var(--text-primary)',
             padding: '8px 16px',
             borderRadius: '20px',
             cursor: 'pointer',
@@ -86,20 +87,22 @@ function TasksPage() {
         <TaskForm />
         
         <div className="controls-panel" style={{ margin: '20px 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {/* 5. ZMIANA: Używamy dispatch do aktualizacji frazy wyszukiwania */}
           <input 
             ref={searchInputRef}
             id="search-input"
             type="text" 
             placeholder="🔍 Szukaj zadania... (Ctrl+K)" 
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => dispatch({ type: 'SET_SEARCH', payload: e.target.value })}
             style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
           />
 
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {/* 6. ZMIANA: Używamy dispatch do aktualizacji kategorii */}
             <select 
               value={filterCategory} 
-              onChange={(e) => setFilterCategory(e.target.value)}
+              onChange={(e) => dispatch({ type: 'SET_CATEGORY_FILTER', payload: e.target.value })}
               style={{ padding: '5px', flex: 1 }}
             >
               <option value="all">Wszystkie kategorie</option>
@@ -109,9 +112,10 @@ function TasksPage() {
               <option value="Inne">Inne</option>
             </select>
 
+            {/* 7. ZMIANA: Używamy dispatch do aktualizacji sortowania */}
             <select 
               value={sortType} 
-              onChange={(e) => setSortType(e.target.value)}
+              onChange={(e) => dispatch({ type: 'SET_SORT', payload: e.target.value })}
               style={{ padding: '5px', flex: 1 }}
             >
               <option value="default">Sortuj: Domyślnie</option>
@@ -123,8 +127,6 @@ function TasksPage() {
 
         <FilterButtons />
 
-        {isSaving && <p style={{ color: 'gray', fontSize: '12px', textAlign: 'center' }}>Zapisywanie zmian...</p>}
-
         {isLoading ? (
           <div className="skeleton">Pobieranie danych z API...</div>
         ) : (
@@ -133,13 +135,14 @@ function TasksPage() {
 
         {tasks.length > 0 && (
           <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={toggleAll} className="action-btn" style={{ background: '#3498db', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            {/* 8. ZMIANA: Podpinamy dispatch do przycisków na dole */}
+            <button onClick={() => dispatch({ type: 'TOGGLE_ALL' })} className="action-btn" style={{ background: '#3498db', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
               Zaznacz/Odznacz
             </button>
-            <button onClick={clearCompleted} className="action-btn" style={{ background: '#f39c12', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            <button onClick={() => dispatch({ type: 'CLEAR_COMPLETED' })} className="action-btn" style={{ background: '#f39c12', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
               Usuń ukończone
             </button>
-            <button onClick={clearAllTasks} className="clear-all-btn" style={{ background: '#e74c3c', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            <button onClick={handleClearAll} className="clear-all-btn" style={{ background: '#e74c3c', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
               Wyczyść wszystko
             </button>
           </div>

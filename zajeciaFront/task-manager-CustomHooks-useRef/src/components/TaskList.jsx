@@ -5,29 +5,24 @@ import { useFilters } from '../context/FilterContext';
 
 function TaskList() {
   const { filteredTasks, searchQuery } = useFilters();
-  const { toggleTask, deleteTask, changePriority, updateTask, tasks } = useTasks();
-
-  // 1. Zgodnie z instrukcją: ref do ostatniego elementu
-  const lastTaskRef = useRef(null);
   
-  // 2. Stany pomocnicze do animacji
+  // 1. ZMIANA: Pobieramy state i dispatch z naszego nowego Contextu
+  const { state, dispatch } = useTasks();
+  const tasks = state.tasks; // Wyciągamy same zadania do naszej logiki scrollowania
+
+  const lastTaskRef = useRef(null);
   const prevTasksLength = useRef(tasks.length);
   const [newTaskId, setNewTaskId] = useState(null);
 
   useEffect(() => {
-    // Sprawdzamy, czy zadanie zostało DODANE (długość tablicy wzrosła)
     if (tasks.length > prevTasksLength.current) {
-      
-      // Pobieramy ID nowo dodanego zadania
       const newTask = tasks[tasks.length - 1];
       setNewTaskId(newTask.id);
 
-      // Scrollujemy płynnie do ostatniego elementu używając referencji
       if (lastTaskRef.current) {
         lastTaskRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
-      // Cleanup: usuwamy klasę animacji po 1.5 sekundy
       const timer = setTimeout(() => setNewTaskId(null), 1500);
 
       prevTasksLength.current = tasks.length;
@@ -35,7 +30,7 @@ function TaskList() {
     }
     
     prevTasksLength.current = tasks.length;
-  }, [tasks]); // Reagujemy na zmiany w tablicy zadań
+  }, [tasks]);
 
   if (filteredTasks.length === 0) {
     if (searchQuery) {
@@ -47,24 +42,21 @@ function TaskList() {
   return (
     <ul className="task-list">
       {filteredTasks.map((task, index) => {
-        // Sprawdzamy, czy to aktualnie renderowane zadanie jest ostatnie na liście
         const isLast = index === filteredTasks.length - 1;
 
         return (
           <TaskItem 
             key={task.id} 
             {...task}
-            onToggle={toggleTask}
-            onDelete={deleteTask}
-            onChangePriority={changePriority}
-            onUpdate={updateTask}
+            // 2. ZMIANA: Zastępujemy stare callbacki wysyłaniem akcji do reducera
+            onToggle={(id) => dispatch({ type: 'TOGGLE_TASK', payload: id })}
+            onDelete={(id) => dispatch({ type: 'DELETE_TASK', payload: id })}
+            onChangePriority={(id, priority) => dispatch({ type: 'CHANGE_PRIORITY', payload: { id, priority } })}
+            onUpdate={(id, title) => dispatch({ type: 'UPDATE_TASK', payload: { id, title } })}
             
-            // 3. Callback ref z instrukcji - przypisujemy refa tylko ostatniemu elementowi
             taskRef={(el) => {
               if (isLast) lastTaskRef.current = el;
             }}
-            
-            // 4. Przekazujemy flagę z informacją, czy to zadanie ma "migać"
             isNew={task.id === newTaskId}
           />
         );
